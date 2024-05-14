@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-
-class LoginPage extends StatefulWidget {
+class SignInPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _SignInPageState createState() => _SignInPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  TextEditingController _usernameController = TextEditingController();
+class _SignInPageState extends State<SignInPage> {
+  TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text('Sign In'),
       ),
       body: Padding(
         padding: EdgeInsets.all(20.0),
@@ -21,10 +20,11 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextField(
-              controller: _usernameController,
+              controller: _emailController,
               decoration: InputDecoration(
-                labelText: 'Username',
+                labelText: 'Email',
               ),
+              keyboardType: TextInputType.emailAddress,
             ),
             SizedBox(height: 20.0),
             TextField(
@@ -37,13 +37,23 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () {
-                // Validate login credentials
-                String username = _usernameController.text;
+    
+                String email = _emailController.text;
                 String password = _passwordController.text;
-                print('Username: $username');
+                // Perform sign-in authentication here
+                // For demo purposes, let's just print the credentials
+                print('Email: $email');
                 print('Password: $password');
               },
-              child: Text('Login'),
+              child: Text('Sign In'),
+            ),
+            SizedBox(height: 10.0),
+            TextButton(
+              onPressed: () {
+                
+                print('Navigate to Sign Up');
+              },
+              child: Text('Don\'t have an account? Sign Up'),
             ),
           ],
         ),
