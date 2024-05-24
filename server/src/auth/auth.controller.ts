@@ -1,7 +1,17 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { Public } from 'src/common/decorators';
+import { SignUpDto } from './dto/auth.dto';
+import { Tokens } from './types';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private authService: AuthService) {}
+
+  @Public()
+  @Post('register')
+  @HttpCode(HttpStatus.CREATED)
+  signUp(@Body() dto: SignUpDto): Promise<Tokens> {
+    return this.authService.signUp(dto);
+  }
 }
