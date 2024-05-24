@@ -15,7 +15,6 @@ datasource db {
 
 model User {
   id                String   @id @default(cuid())
-  name              String?
   email             String   @unique
   phone             String   @unique
   password          String
@@ -24,6 +23,30 @@ model User {
   disabled_by_admin Boolean  @default(false)
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+  Profile           Profile?
+
+  @@map("users")
+}
+
+model Profile {
+  id               String   @id() @default(uuid())
+  name             String
+  permanentAddress String
+  temporaryAddress String
+  dob              String
+  occupation       String
+  voterId          String   @unique
+  referralCode     String?
+  avatar           String?
+  province         Int
+  district         String
+  municipality     String
+  ward             String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 enum Role {
