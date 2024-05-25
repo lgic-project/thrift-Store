@@ -1,4 +1,5 @@
 import {
+  IsEmail,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -8,13 +9,22 @@ import {
 } from 'class-validator';
 import { IsNepaliPhoneNumber } from '../validators/nepali-phone-number.validator';
 
+export class SignInDto {
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  password: string;
+}
+
 export class SignUpDto {
   @IsNotEmpty()
   @IsString()
   name: string;
 
   @IsNotEmpty()
-  @IsString()
+  @IsEmail()
   email: string;
 
   @IsString()

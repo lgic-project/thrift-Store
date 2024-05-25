@@ -1,7 +1,7 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
-import { SignUpDto } from './dto/auth.dto';
+import { SignInDto, SignUpDto } from './dto/auth.dto';
 import { Tokens } from './types';
 import { District } from 'states-nepal';
 import * as bcrypt from 'bcrypt';
@@ -122,6 +122,29 @@ export class AuthService {
     } catch (e: any) {
       throw new ForbiddenException(e.message);
     }
+  }
+
+  async signIn(dto: SignInDto): Promise<Tokens> {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email: dto.email,
+      },
+    });
+
+    if (!user) throw new ForbiddenException('User not found');
+
+    if (user.disabled_by_admin)
+      throw new ForbiddenException('User not allowed');
+
+    const passwordMatch = await bcrypt.compare(dto.password, user.password);
+
+    if (!passwordMatch) throw new ForbiddenException();
+
+    const tokens = await this.signToken(user.id, user.phone, user.role);
+
+    await this.updateRtHash(user.id, tokens.refresh_token);
+
+    return tokens;
   }
 
   hashData(data: string) {
