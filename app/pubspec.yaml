@@ -63,6 +63,11 @@ flutter:
     - assets/Item1.jpeg
     - assets/Item2.jpeg
     - assets/Item3.jpeg
+    - assets/Item4.jpeg
+    - assets/Item5.jpeg
+    - assets/Item6.jpeg
+    - assets/Item7.jpeg
+
    
 
   #   - images/a_dot_burr.jpeg

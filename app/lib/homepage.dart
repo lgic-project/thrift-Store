@@ -57,6 +57,10 @@ class HomePage extends StatelessWidget {
                         _buildFeaturedItem('assets/Item1.jpeg', 'Item 1', '\$1000'),
                         _buildFeaturedItem('assets/Item2.jpeg', 'Item 2', '\$1500'),
                         _buildFeaturedItem('assets/Item3.jpeg', 'Item 3', '\$2000'),
+                        _buildFeaturedItem('assets/Item4.jpeg', 'Item 4', '\$2500'),
+                        _buildFeaturedItem('assets/Item5.jpeg', 'Item 5', '\$3000'),
+                        _buildFeaturedItem('assets/Item6.jpeg', 'Item 6', '\$3500'),
+                        _buildFeaturedItem('assets/Item7.jpeg', 'Item 7', '\$1700'),
                         // Add more featured items here
                       ],
                     ),
