@@ -84,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                       print('Username: $username');
                       print('Password: $password');
                       if (username == 'user' && password == 'user') {
-                        Navigator.pushReplacementNamed(context, '/home');
+                        Navigator.pushReplacementNamed(context, '/navbar');
                       }
                     },
                     style: ElevatedButton.styleFrom(

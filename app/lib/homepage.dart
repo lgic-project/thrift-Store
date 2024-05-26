@@ -4,16 +4,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Thrift-Store',
-          style: TextStyle(
-            fontFamily: 'Pacifico',
-            fontSize: 28.0,
-          ),
-        ),
-        backgroundColor: Colors.teal,
-      ),
+      
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
