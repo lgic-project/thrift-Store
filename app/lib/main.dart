@@ -1,5 +1,6 @@
 import 'package:app/homepage.dart';
 import 'package:app/login.dart';
+import 'package:app/navbar.dart';
 import 'package:app/signin.dart';
 import 'package:flutter/material.dart';
 void main() {
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
           '/home': (context) => HomePage(),
           '/signup': (context) => SignInPage(),
           '/login': (context) => LoginPage(),
+          '/navbar': (context) => NavigatorScaffold(),
         },
     );
   }
