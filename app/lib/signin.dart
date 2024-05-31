@@ -10,9 +10,11 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +56,24 @@ class _SignInPageState extends State<SignInPage> {
                         filled: true,
                         fillColor: Colors.white.withOpacity(0.1),
                         labelText: 'Email',
+                        labelStyle: TextStyle(color: Colors.white),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                          borderSide: BorderSide.none,
+                        ),
+                        prefixIcon: Icon(Icons.email, color: Colors.white),
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    SizedBox(height: 30.0),
+                    // Email TextField
+                    TextField(
+                      controller: _nameController,
+                      style: TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white.withOpacity(0.1),
+                        labelText: 'name',
                         labelStyle: TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30.0),

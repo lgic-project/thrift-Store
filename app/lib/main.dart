@@ -11,16 +11,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Thrift Store',
+      initialRoute: '/',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginPage(),
+      home: LoginPage(), 
       routes: {
           '/home': (context) => HomePage(),
           '/signup': (context) => SignInPage(),
           '/login': (context) => LoginPage(),
           '/navbar': (context) => NavigatorScaffold(),
+          '/logout': (context) => HomePage(),
         },
     );
   }
