@@ -1,4 +1,4 @@
-import 'package:app/booking.dart';
+import 'package:app/Purchase.dart';
 import 'package:app/homepage.dart';
 import 'package:app/profile.dart';
 import 'package:app/store.dart';
@@ -25,10 +25,9 @@ class _NavigatorScaffoldState extends State<NavigatorScaffold> {
         break;
       case 1:
         currentBody = Store();
-
         break;
       case 2:
-        currentBody = Booking();
+        currentBody = Purchase();
         break;
       case 3:
         currentBody = ProfilePage();
@@ -38,16 +37,36 @@ class _NavigatorScaffoldState extends State<NavigatorScaffold> {
       extendBody: true,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
-        child: ClipRRect(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(5),
-            bottomRight: Radius.circular(5),
+        child: AppBar(
+          automaticallyImplyLeading: false,
+          title: Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Search',
+                      border: InputBorder.none,
+                      hintStyle: TextStyle(color: Colors.white70),
+                    ),
+                    style: TextStyle(color: Colors.white),
+                    cursorColor: Colors.white,
+                    onChanged: (value) {
+                      // Perform search operations here
+                    },
+                  ),
+                ),
+              ),
+              IconButton(
+                icon: Icon(Icons.search),
+                onPressed: () {
+                  // Perform search action here
+                },
+              ),
+            ],
           ),
-          child: AppBar(
-            automaticallyImplyLeading: false,
-            title: const Text('Thrift Store'),
-            backgroundColor: Theme.of(context).primaryColor,
-          ),
+          backgroundColor: Theme.of(context).primaryColor,
         ),
       ),
       body: currentBody,
@@ -56,7 +75,6 @@ class _NavigatorScaffoldState extends State<NavigatorScaffold> {
         //   topLeft: Radius.circular(40),
         //   topRight: Radius.circular(40),
         // ),
-        
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           backgroundColor: Theme.of(context).primaryColor,
@@ -71,7 +89,7 @@ class _NavigatorScaffoldState extends State<NavigatorScaffold> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.request_page_sharp),
-              label: 'Booking',
+              label: 'Add to cart',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),

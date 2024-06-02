@@ -1,3 +1,4 @@
+import 'package:app/Purchase.dart';
 import 'package:app/homepage.dart';
 import 'package:app/login.dart';
 import 'package:app/navbar.dart';
@@ -21,8 +22,9 @@ class MyApp extends StatelessWidget {
           '/home': (context) => HomePage(),
           '/signup': (context) => SignInPage(),
           '/login': (context) => LoginPage(),
-          '/navbar': (context) => NavigatorScaffold(),
+          '/navbar': (context) => const NavigatorScaffold(),
           '/logout': (context) => HomePage(),
+          '/purchase': (context) => const Purchase(),
         },
     );
   }

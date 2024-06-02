@@ -83,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                       String password = _passwordController.text;
                       print('Username: $username');
                       print('Password: $password');
-                      if (username == 'user' && password == 'user') {
+                      if (username == 'user02@gmail.com' && password == 'password') {
                         Navigator.pushReplacementNamed(context, '/navbar');
                       }
                     },
