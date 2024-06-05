@@ -1,34 +1,121 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { Tabs } from "expo-router";
+import React from "react";
 
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { TabBarIcon } from "@/components/navigation/TabBarIcon";
+import { Colors } from "@/constants/Colors";
+import { useColorScheme } from "@/hooks/useColorScheme";
+import { Text, View } from "react-native";
+
+interface TabIconProps {
+  icon: any;
+  activeIcon: any;
+  color: string;
+  name: string;
+  focused: boolean;
+  iconSize?: number;
+}
+
+const TabIcon = ({ icon, activeIcon, color, name, focused }: TabIconProps) => {
+  return (
+    <View className="items-center justify-center gap-2">
+      <TabBarIcon name={focused ? `${activeIcon}` : `${icon}`} color={color} />
+      <Text
+        className={`text-xs ${
+          focused ? "font-psemibold" : "font-pregular"
+        } text-xs`}
+        style={{ color: color }}
+      >
+        {name}
+      </Text>
+    </View>
+  );
+};
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+        tabBarShowLabel: false,
         headerShown: false,
-      }}>
+        tabBarStyle: {
+          height: 84,
+        },
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
+          title: "Home",
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+            <TabIcon
+              icon={"home-outline"}
+              activeIcon={"home"}
+              color={color}
+              name="Home"
+              focused={focused}
+            />
           ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="discover"
         options={{
-          title: 'Explore',
+          title: "Discover",
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+            <TabIcon
+              icon={"compass-outline"}
+              activeIcon={"compass-sharp"}
+              color={color}
+              name="Discover"
+              focused={focused}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="create"
+        options={{
+          title: "Create",
+          tabBarIcon: ({ color, focused }) => (
+            <TabIcon
+              icon={"add-circle-outline"}
+              activeIcon={"add-circle-sharp"}
+              color={color}
+              name="Create"
+              focused={focused}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="chat"
+        options={{
+          title: "Chat",
+          tabBarIcon: ({ color, focused }) => (
+            <TabIcon
+              icon={"chatbubble-ellipses-outline"}
+              activeIcon={"chatbubble-ellipses-sharp"}
+              color={color}
+              name="Chat"
+              focused={focused}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "Profile",
+          tabBarIcon: ({ color, focused }) => (
+            <TabIcon
+              icon={"person-outline"}
+              activeIcon={"person"}
+              color={color}
+              name="Profile"
+              focused={focused}
+            />
           ),
         }}
       />
