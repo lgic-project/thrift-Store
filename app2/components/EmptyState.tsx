@@ -18,8 +18,10 @@ const EmptyState = ({ title, subTitle }: EmptyStateProps) => {
         className="w-[270px] h-[215px]"
         resizeMode="contain"
       />
-      <Text className="font-pmedium text-sm text-gray-100">{subTitle}</Text>
-      <Text className="text-xl text-center font-psemibold text-white mt-2">
+      <Text className="font-pmedium text-sm text-center text-gray-100">
+        {subTitle}
+      </Text>
+      <Text className="text-xl text-center font-psemibold text-black mt-2">
         {title}
       </Text>
     </View>
