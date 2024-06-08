@@ -1,5 +1,5 @@
 import { TouchableOpacity, Text } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 
 interface CustomButtonProps {
   title: string;
@@ -16,6 +16,7 @@ const CustomButton = ({
   textStyles,
   isLoading,
 }: CustomButtonProps) => {
+  const [active, setActive] = useState(false);
   return (
     <TouchableOpacity
       onPress={handlePress}
