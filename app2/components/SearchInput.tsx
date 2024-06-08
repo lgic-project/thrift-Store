@@ -37,6 +37,7 @@ const SearchInput = ({ placeholder, initialQuery }: SearchInputProps) => {
               "Missing query",
               "Please input something to search results across database"
             );
+            return;
           }
           if (pathname.startsWith("/search")) router.setParams({ query });
           else router.push(`/search/${query}`);
