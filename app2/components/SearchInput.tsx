@@ -15,13 +15,20 @@ import { TabBarIcon } from "./navigation/TabBarIcon";
 interface SearchInputProps {
   placeholder: string;
   initialQuery?: string;
+  additionStyle?: string;
 }
 
-const SearchInput = ({ placeholder, initialQuery }: SearchInputProps) => {
+const SearchInput = ({
+  placeholder,
+  initialQuery,
+  additionStyle,
+}: SearchInputProps) => {
   const pathname = usePathname();
   const [query, setQuery] = useState(initialQuery || "");
   return (
-    <View className=" bg-[#fff] w-full h-10 px-4 rounded-3xl items-center flex-row space-x-4">
+    <View
+      className={`bg-[#fff] w-full h-10 px-4 rounded-3xl items-center flex-row space-x-4 ${additionStyle}`}
+    >
       <TextInput
         className="text-base dark:text-white mt-0.5 flex-1 font-pregular"
         value={query}
