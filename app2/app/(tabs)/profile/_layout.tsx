@@ -8,7 +8,6 @@ interface RouteParams {
 }
 
 export default function _layout() {
-  const route = useRouter();
   const state = useNavigationState((state) => state);
 
   const currentRoute = state.routes[state.index];
