@@ -2,9 +2,10 @@ import {
   DarkTheme,
   DefaultTheme,
   ThemeProvider,
+  useNavigationState,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Stack, usePathname } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
@@ -38,6 +39,10 @@ export default function RootLayout() {
   if (!loaded) {
     return null;
   }
+  const state = useNavigationState((state) => state);
+
+  const pathname = usePathname();
+  const query = `Search result for ${pathname.split("/").pop()}`;
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -45,7 +50,7 @@ export default function RootLayout() {
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="chat/[message]" />
-          <Stack.Screen name="search/[query]" options={{ headerShown: false }} />
+          <Stack.Screen name="search/[query]" options={{ title: query }} />
           <Stack.Screen name="+not-found" />
         </Stack>
       </ThemeProvider>
