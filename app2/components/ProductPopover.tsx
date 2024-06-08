@@ -97,10 +97,16 @@ const ProductPopover: React.FC<ProductPopoverProps> = ({
             <View className="flex-row pt-5 items-center justify-evenly">
               <Text className="text-[16px] font-pSemibold">Rs 198.00</Text>
               <CustomButton
-                title="Contact Seller"
+                title="Contact"
                 handlePress={() => {}}
-                containerStyles="w-[150px] h-[50px] bg-[#F11A42]"
-                textStyles="text-white font-pSemibold text-[13px]"
+                containerStyles="w-[100px] bg-[#F11A42] h-[38px]"
+                textStyles="text-white font-pSemibold text-[14px]"
+              />
+              <CustomButton
+                title="Message"
+                handlePress={() => {}}
+                containerStyles="w-[100px] bg-[#F1EAEA] h-[38px]"
+                textStyles="text-black font-pSemibold text-[14px]"
               />
             </View>
           </View>
