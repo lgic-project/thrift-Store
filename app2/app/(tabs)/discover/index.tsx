@@ -1,10 +1,11 @@
-import { View, Text, FlatList } from "react-native";
-import React, { useState } from "react";
+import { View, Text, FlatList, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SearchInput from "@/components/SearchInput";
 import CustomButton from "@/components/CustomButton";
 import VideoThumbnail from "@/components/VideoThumbnail";
 import EmptyState from "@/components/EmptyState";
+import SearchProduct from "@/components/SearchProduct";
 
 interface VideoData {
   id: number;
@@ -78,6 +79,18 @@ const videos: VideoData[] = [
       "https://images.pexels.com/photos/15831205/pexels-photo-15831205/free-photo-of-american-flag-at-the-9-11-memorial-in-new-york-city-new-york.jpeg?auto=compress&cs=tinysrgb&w=600",
     category: "Anime",
   },
+  {
+    id: 6,
+    title: "Product Title 5",
+    username: "soul",
+    url: "https://videos.pexels.com/video-files/14907580/14907580-sd_540_960_30fps.mp4",
+    profilePic:
+      "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
+    description: "#avicii #wflove",
+    thumbnail:
+      "https://images.pexels.com/photos/15831205/pexels-photo-15831205/free-photo-of-american-flag-at-the-9-11-memorial-in-new-york-city-new-york.jpeg?auto=compress&cs=tinysrgb&w=600",
+    category: "Anime",
+  },
   // Add more videos as needed
 ];
 
@@ -102,19 +115,27 @@ const filterList = [
     id: 5,
     name: "Anime",
   },
+  {
+    id: 6,
+    name: "Rare",
+  },
+  {
+    id: 7,
+    name: "Trending",
+  },
 ];
 
 const Discover = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(
-    "Explore"
+  const [selectedCategory, setSelectedCategory] = useState<string>("Explore");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  const filteredVideos = videos.filter(
+    (video) =>
+      (selectedCategory === "Explore" || video.category === selectedCategory) &&
+      (video.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        video.username.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
-  const filteredVideos =
-    selectedCategory === "Explore"
-      ? videos
-      : videos.filter((video) => video.category === selectedCategory);
-
-  // Add dummy items to maintain the 3-column structure
   const filledVideos =
     filteredVideos.length % 3 === 0
       ? filteredVideos
@@ -133,24 +154,28 @@ const Discover = () => {
         ];
 
   return (
-    <SafeAreaView className={`h-full pr-5 pl-5`}>
+    <SafeAreaView style={styles.container} className={`h-full`}>
       <View className="pt-5 pb-5">
-        <SearchInput placeholder="Search" additionStyle="h-14" />
+        <SearchProduct
+          placeholder="Search"
+          additionStyle="h-14"
+          onSearch={(query) => {
+            setSearchQuery(query);
+          }}
+        />
       </View>
       <View>
         <FlatList
           horizontal
           data={filterList}
-          showsHorizontalScrollIndicator={false}
+          showsHorizontalScrollIndicator={true}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <CustomButton
               title={item.name}
               handlePress={() => setSelectedCategory(item.name)}
-              containerStyles={`w-[70px] m-1 ${
-                selectedCategory === item.name
-                  ? "bg-[#F11A42]"
-                  : "bg-[#4E5358]"
+              containerStyles={`w-[70px] mr-[6px] ml-[6px] mb-[10px] ${
+                selectedCategory === item.name ? "bg-[#F11A42]" : "bg-[#4E5358]"
               }`}
               textStyles="text-[12px] font-pRegular text-white "
             />
@@ -168,24 +193,27 @@ const Discover = () => {
               key={index}
               hideViews={true}
               containerStyles="mt-6 mr-[6px] ml-[6px]"
-              imageStyles="h-[180px] rounded-3xl"
+              imageStyles="h-[200px] rounded-3xl"
             />
           ) : (
-            <View
-              key={index}
-              style={{ flex: 1, margin: 6, height: 180 }}
-            />
+            <View key={index} style={{ flex: 1, margin: 6, height: 200 }} />
           )
         }
         ListEmptyComponent={() => (
           <EmptyState
-            title="No videos found"
-            subTitle="No product videos found."
+            title="No products found"
+            subTitle="No products found."
           />
         )}
       />
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+    container: {
+      marginHorizontal: 10,
+    },
+});
 
 export default Discover;
