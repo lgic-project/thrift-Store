@@ -5,7 +5,6 @@ import { useLocalSearchParams } from "expo-router";
 import SearchInput from "../../components/SearchInput";
 import EmptyState from "../../components/EmptyState";
 import ChatList from "../../components/ChatList";
-import UserIconList from "../../components/UserIconList";
 
 const conversations = [
   {
@@ -34,90 +33,41 @@ const conversations = [
   },
 ];
 
-const otherUsers = [
-  {
-    id: "1",
-    profilePic:
-      "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
-    username: "Niraj",
-  },
-  {
-    id: "2",
-    profilePic:
-      "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
-    username: "Nabbin",
-  },
-  {
-    id: "3",
-    profilePic:
-      "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
-    username: "Niren",
-  },
-  {
-    id: "4",
-    profilePic:
-      "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
-    username: "Abishek",
-  },
-  {
-    id: "5",
-    profilePic:
-      "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
-    username: "Vetrie",
-  },
-  {
-    id: "6",
-    profilePic:
-      "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
-    username: "Vetrie",
-  },
-  {
-    id: "7",
-    profilePic:
-      "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
-    username: "Vetrie",
-  },
-  {
-    id: "8",
-    profilePic:
-      "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
-    username: "Vetrie",
-  },
-];
-
 const Search: React.FC = () => {
   const { query } = useLocalSearchParams();
+  const [searchQuery, setSearchQuery] = useState(query ? String(query) : "");
   const [filteredConversations, setFilteredConversations] = useState(conversations);
-  const [filteredUsers, setFilteredUsers] = useState(otherUsers);
 
   useEffect(() => {
-    const searchQuery = Array.isArray(query) ? query[0] : query;
     if (searchQuery) {
       const filteredConversations = conversations.filter((conversation) =>
         conversation.username.toLowerCase().includes(searchQuery.toLowerCase())
       );
-      const filteredUsers = otherUsers.filter((user) =>
-        user.username.toLowerCase().includes(searchQuery.toLowerCase())
-      );
       setFilteredConversations(filteredConversations);
-      setFilteredUsers(filteredUsers);
     } else {
       setFilteredConversations(conversations);
-      setFilteredUsers(otherUsers);
     }
-  }, [query]);
+  }, [searchQuery]);
 
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
         data={filteredConversations}
-        renderItem={({ item }) => <ChatList conversations={filteredConversations} />}
+        renderItem={({ item }) => (
+          <ChatList conversations={filteredConversations} />
+        )}
         ListHeaderComponent={() => (
           <View style={styles.headerContainer}>
-            <Text style={styles.headerText}>Search Results</Text>
-            <Text style={styles.queryText}>{query}</Text>
+            {/* <Text style={styles.headerText}>Search Results</Text>
+            <Text style={styles.queryText}>{searchQuery}</Text> */}
             <View style={styles.searchInputContainer}>
-              <SearchInput placeholder="Search for a user" initialQuery={query ? String(query) : ''} />
+              <SearchInput
+                placeholder="Search for a user"
+                initialQuery={searchQuery}
+                onSearch={(query) => {
+                  setSearchQuery(query);
+                }}
+              />
             </View>
           </View>
         )}
@@ -128,7 +78,6 @@ const Search: React.FC = () => {
           />
         )}
       />
-      <UserIconList allUserIconList={filteredUsers} />
     </SafeAreaView>
   );
 };
