@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import SearchInput from "@/components/SearchInput";
@@ -84,11 +84,16 @@ const otherUsers = [
 ];
 
 const MessageList: React.FC = () => {
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
   return (
     <>
       <View style={styles.header}>
         <View className="pt-4 pb-4">
-          <SearchInput placeholder="Search" />
+          <SearchInput 
+            placeholder="Search" 
+            onSearch={(query) => setSearchQuery(query)} 
+          />
         </View>
       </View>
       <View>
