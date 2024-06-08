@@ -21,6 +21,7 @@ interface VideoData {
   url: string;
   profilePic: string;
   description: string;
+  thumbnail: string;
 }
 
 interface PlayVideoListItemProps {
@@ -45,6 +46,8 @@ const PlayVideoListItem: React.FC<PlayVideoListItemProps> = ({
   const topTabBarHeight = 50; // Adjust this value according to your top tab bar height
   const screenHeight =
     Dimensions.get("window").height - BottomTabHeight - topTabBarHeight;
+
+  const [liked, setLiked] = useState(false);
 
   useEffect(() => {
     if (activeIndex === index && activeTab === screenTab) {
@@ -132,7 +135,9 @@ const PlayVideoListItem: React.FC<PlayVideoListItemProps> = ({
         </View>
         <View className="items-center justify-center gap-6">
           <View className="flex justify-center items-center">
-            <TabBarIcon name="heart" color={"white"} size={38} />
+            <TouchableOpacity onPress={() => setLiked(!liked)}>
+              <TabBarIcon name="heart" color={`${liked?'#F11A42':'white'}`} size={38} />
+            </TouchableOpacity>
             <Text className="text-white mt-1">4445</Text>
           </View>
           <View className="flex justify-center items-center">
