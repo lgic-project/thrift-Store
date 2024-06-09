@@ -39,14 +39,12 @@ const Search: React.FC = () => {
   const [filteredConversations, setFilteredConversations] = useState(conversations);
 
   useEffect(() => {
-    if (searchQuery) {
-      const filteredConversations = conversations.filter((conversation) =>
-        conversation.username.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      setFilteredConversations(filteredConversations);
-    } else {
-      setFilteredConversations(conversations);
-    }
+    const filteredConversations = searchQuery
+      ? conversations.filter((conversation) =>
+          conversation.username.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      : conversations;
+    setFilteredConversations(filteredConversations);
   }, [searchQuery]);
 
   return (
@@ -58,8 +56,6 @@ const Search: React.FC = () => {
         )}
         ListHeaderComponent={() => (
           <View style={styles.headerContainer}>
-            {/* <Text style={styles.headerText}>Search Results</Text>
-            <Text style={styles.queryText}>{searchQuery}</Text> */}
             <View style={styles.searchInputContainer}>
               <SearchInput
                 placeholder="Search for a user"
@@ -84,7 +80,6 @@ const Search: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#f9f9f9",
     flex: 1,
   },
   headerContainer: {
