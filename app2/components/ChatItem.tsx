@@ -103,7 +103,6 @@ const ChatItem: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F2F2F2",
   },
   chatContainer: {
     paddingVertical: 10,
