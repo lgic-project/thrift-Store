@@ -26,7 +26,7 @@ const SearchProduct = ({
       className={`bg-[#fff] w-full h-10 px-4 rounded-3xl items-center flex-row space-x-4 ${additionStyle}`}
     >
       <TextInput
-        className="text-base dark:text-white mt-0.5 flex-1 font-pregular"
+        className="text-base mt-0.5 flex-1 font-pregular"
         value={query}
         placeholder={placeholder}
         placeholderTextColor="#CDCDE0"
