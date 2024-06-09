@@ -9,7 +9,6 @@ import { Stack, usePathname } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
-
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
@@ -39,10 +38,10 @@ export default function RootLayout() {
   if (!loaded) {
     return null;
   }
-  const state = useNavigationState((state) => state);
 
-  const pathname = usePathname();
-  const query = `Search result for ${pathname.split("/").pop()}`;
+  // This ensures that hooks are always called in the same order
+  // const pathname = usePathname();
+  // const query = pathname.startsWith("/search") ? `Search result for ${pathname.split("/").pop()}` : "";
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -50,7 +49,7 @@ export default function RootLayout() {
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="chat/[message]" />
-          <Stack.Screen name="search/[query]" options={{ title: query }} />
+          <Stack.Screen name="search/[query]"  />
           <Stack.Screen name="+not-found" />
         </Stack>
       </ThemeProvider>
