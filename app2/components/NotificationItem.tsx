@@ -34,14 +34,15 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
 
   return (
     <TouchableOpacity style={styles.container}>
-      <Image
-        source={{ uri: profilePic }}
-        style={styles.profilePic}
-      />
+      <Image source={{ uri: profilePic }} style={styles.profilePic} />
       <View style={styles.textContainer}>
-        <Text style={styles.username}>{username}</Text>
-        <Text style={styles.message}>{message}</Text>
-        <Text style={styles.timestamp}>{timestamp}</Text>
+        <Text style={styles.username} className="dark:text-white">
+          {username}
+        </Text>
+        <Text style={styles.message} className="text-black dark:text-gray-200">
+          {message}
+        </Text>
+        <Text style={styles.timestamp} className="text-black dark:text-gray-400">{timestamp}</Text>
       </View>
       <TabBarIcon name={getIconName()} color="gray" size={24} />
     </TouchableOpacity>
@@ -53,10 +54,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ddd",
-    backgroundColor: "#fff",
-    elevation: 1,
+    backgroundColor: "transparent",
     marginHorizontal: 10,
     marginVertical: 5,
     borderRadius: 10,
@@ -66,9 +64,11 @@ const styles = StyleSheet.create({
     height: 45,
     borderRadius: 22.5,
     marginRight: 10,
+    backgroundColor: "transparent",
   },
   textContainer: {
     flex: 1,
+    backgroundColor: "transparent",
   },
   username: {
     fontWeight: "bold",
@@ -76,11 +76,9 @@ const styles = StyleSheet.create({
   },
   message: {
     fontSize: 14,
-    color: "gray",
   },
   timestamp: {
     fontSize: 12,
-    color: "gray",
   },
 });
 
