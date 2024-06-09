@@ -1,5 +1,12 @@
 import React from "react";
-import { View, FlatList, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  FlatList,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
 import { useRouter } from "expo-router";
 
 interface ChatListProps {
@@ -15,7 +22,11 @@ interface ChatListProps {
 const ChatList: React.FC<ChatListProps> = ({ conversations }) => {
   const router = useRouter();
 
-  const renderItem = ({ item }: { item: ChatListProps["conversations"][0] }) => (
+  const renderItem = ({
+    item,
+  }: {
+    item: ChatListProps["conversations"][0];
+  }) => (
     <TouchableOpacity
       style={styles.conversationItem}
       onPress={() => router.push("chat/[message]")}
@@ -23,10 +34,21 @@ const ChatList: React.FC<ChatListProps> = ({ conversations }) => {
       <Image source={{ uri: item.profilePic }} style={styles.profilePic} />
       <View style={styles.textContainer}>
         <View style={styles.messageHeader}>
-          <Text style={styles.username}>{item.username}</Text>
-          <Text style={styles.timestamp}>{item.timestamp}</Text>
+          <Text style={styles.username} className="text-black dark:text-white">
+            {item.username}
+          </Text>
+          <Text
+            style={styles.timestamp}
+            className="text-black dark:text-gray-200"
+          >
+            {item.timestamp}
+          </Text>
         </View>
-        <Text style={styles.lastMessage} numberOfLines={1}>
+        <Text
+          style={styles.lastMessage}
+          numberOfLines={1}
+          className="text-black dark:text-gray-200"
+        >
           {item.lastMessage}
         </Text>
       </View>
@@ -48,10 +70,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingVertical: 10,
-    paddingHorizontal: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ddd",
-    backgroundColor: "#fff",
     marginHorizontal: 10,
     marginVertical: 5,
     borderRadius: 10,
@@ -72,16 +90,13 @@ const styles = StyleSheet.create({
   username: {
     fontWeight: "bold",
     fontSize: 16,
-    color: "#333",
   },
   lastMessage: {
     fontSize: 14,
-    color: "#666",
     marginTop: 5,
   },
   timestamp: {
     fontSize: 12,
-    color: "#999",
   },
   listContentContainer: {
     height: "auto",
