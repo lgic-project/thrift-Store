@@ -14,6 +14,7 @@ import { Picker } from "@react-native-picker/picker";
 import { Swipeable } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
+import { useColorScheme } from "@/hooks/useColorScheme";
 
 const notificationsData = [
   {
@@ -60,6 +61,7 @@ const Notification: React.FC = () => {
   const [filteredNotifications, setFilteredNotifications] =
     useState(notificationsData);
   const router = useRouter();
+  const colorScheme = useColorScheme();
 
   useEffect(() => {
     filterNotifications(selectedFilter);
@@ -107,7 +109,7 @@ const Notification: React.FC = () => {
             style={{ flex: 1, backgroundColor: "transparent" }}
             className="justify-center items-end w-full h-full p-[10px]"
           >
-            <Text className="text-black underline font-pRegular">
+            <Text className="text-black dark:text-white underline font-pRegular ">
               Swipe left to delete
             </Text>
           </View>
@@ -132,7 +134,12 @@ const Notification: React.FC = () => {
           <Picker
             selectedValue={selectedFilter}
             onValueChange={(itemValue) => setSelectedFilter(itemValue)}
-            style={styles.picker}
+            style={{
+              borderRadius: 5,
+              width: "100%",
+              color: `${colorScheme === "dark" ? "white" : "black"}`,
+            }}
+            dropdownIconColor={`${colorScheme === "dark" ? "white" : "black"}`}
           >
             <Picker.Item label="All activity" value="all" />
             <Picker.Item label="Follow Activity" value="follow" />
@@ -143,9 +150,13 @@ const Notification: React.FC = () => {
         </View>
         <TouchableOpacity
           style={styles.iconButton}
-          onPress={() => router.push("notification/[messageList]")} // Navigate to MessageList
+          onPress={() => router.push("notification/[messageList]")}
         >
-          <TabBarIcon name="chatbubble-outline" color="gray" size={24} />
+          <TabBarIcon
+            name="chatbubble-outline"
+            color={`${colorScheme === "dark" ? "white" : "gray"}`}
+            size={24}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.iconButton}
@@ -178,7 +189,6 @@ const Notification: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f9f9f9",
   },
   headerContainer: {
     flexDirection: "row",
@@ -189,10 +199,6 @@ const styles = StyleSheet.create({
   },
   pickerContainer: {
     flex: 1,
-  },
-  picker: {
-    width: "100%",
-    borderRadius: 5,
   },
   iconButton: {
     marginLeft: 15,
