@@ -1,11 +1,5 @@
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
-import React, { useState } from "react";
+import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import React, { useState, useCallback } from "react";
 import { usePathname, useRouter } from "expo-router";
 import { TabBarIcon } from "./navigation/TabBarIcon";
 
@@ -26,7 +20,9 @@ const SearchInput = ({
   const [query, setQuery] = useState(initialQuery || "");
   const router = useRouter();
 
-  const handleSearch = () => {
+  console.log(pathname);
+
+  const handleSearch = useCallback(() => {
     if (!query) {
       Alert.alert(
         "Missing query",
@@ -35,21 +31,20 @@ const SearchInput = ({
       return;
     }
     if (pathname.startsWith("/search")) {
-      // Update the search query without navigating to a new page
       onSearch(query);
       router.setParams({ query });
     } else {
       onSearch(query);
       router.push(`/search/${query}`);
     }
-  };
+  }, [query, pathname, onSearch, router]);
 
   return (
     <View
       className={`bg-[#fff] w-full h-10 px-4 rounded-3xl items-center flex-row space-x-4 ${additionStyle}`}
     >
       <TextInput
-        className="text-base dark:text-white mt-0.5 flex-1 font-pregular"
+        className="text-base  mt-0.5 flex-1 font-pregular"
         value={query}
         placeholder={placeholder}
         placeholderTextColor="#CDCDE0"
