@@ -13,7 +13,7 @@ const UserIconList: React.FC<UserIconListProps> = ({ allUserIconList }) => {
   }) => (
     <View style={styles.allUserIconContainer}>
       <Image source={{ uri: item.profilePic }} style={styles.allUserIconPic} />
-      <Text style={styles.allUserIconName}>{item.username}</Text>
+      <Text style={styles.allUserIconName} className="dark:text-white">{item.username}</Text>
     </View>
   );
 
@@ -47,7 +47,6 @@ const styles = StyleSheet.create({
   allUserIconName: {
     marginTop: 5,
     fontSize: 12,
-    color: "#333",
   },
 });
 
