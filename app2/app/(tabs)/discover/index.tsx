@@ -6,6 +6,7 @@ import CustomButton from "@/components/CustomButton";
 import VideoThumbnail from "@/components/VideoThumbnail";
 import EmptyState from "@/components/EmptyState";
 import SearchProduct from "@/components/SearchProduct";
+import ProductThumbnail from "@/components/ProductThumbnail";
 
 interface VideoData {
   id: number;
@@ -135,6 +136,7 @@ const filterList = [
 const Discover = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("Explore");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const productId = 1;
 
   const filteredVideos = videos.filter(
     (video) =>
@@ -196,8 +198,8 @@ const Discover = () => {
         renderItem={({ item, index }) =>
           item.id !== -1 ? (
             <View className="flex-1">
-              <VideoThumbnail
-                video={item}
+              <ProductThumbnail
+                product={item}
                 key={index}
                 hideViews={true}
                 containerStyles="mt-6 mr-[6px] ml-[6px]"
