@@ -18,7 +18,10 @@ interface TabIconProps {
 const TabIcon = ({ icon, activeIcon, color, name, focused }: TabIconProps) => {
   return (
     <View className="items-center justify-center gap-2">
-      <TabBarIcon name={focused ? `${activeIcon}` : `${icon}`} color={color} />
+      <TabBarIcon
+        name={focused ? (activeIcon as any) : (icon as any)}
+        color={color}
+      />
       <Text
         className={`text-xs ${
           focused ? "font-psemibold" : "font-pregular"
