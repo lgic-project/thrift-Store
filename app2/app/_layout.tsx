@@ -49,7 +49,8 @@ export default function RootLayout() {
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="chat/[message]" />
-          <Stack.Screen name="search/[query]"  />
+          <Stack.Screen name="search/[query]" />
+          <Stack.Screen name="product/[productInfo]"  options={{ headerTransparent: true, title: '' }} />
           <Stack.Screen name="+not-found" />
         </Stack>
       </ThemeProvider>
