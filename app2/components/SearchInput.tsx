@@ -20,8 +20,6 @@ const SearchInput = ({
   const [query, setQuery] = useState(initialQuery || "");
   const router = useRouter();
 
-  console.log(pathname);
-
   const handleSearch = useCallback(() => {
     if (!query) {
       Alert.alert(
