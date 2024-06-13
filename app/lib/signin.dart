@@ -14,7 +14,8 @@ class _SignInPageState extends State<SignInPage> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  
+  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _dobController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class _SignInPageState extends State<SignInPage> {
         children: [
           // Background image
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/background.jpg'),
                 fit: BoxFit.cover,
@@ -36,108 +37,144 @@ class _SignInPageState extends State<SignInPage> {
           ),
           // Sign Up form
           Padding(
-            padding: EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(20.0),
             child: Center(
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     // Logo
-                    CircleAvatar(
+                    const CircleAvatar(
                       radius: 50.0,
                       backgroundImage: AssetImage('assets/logo.png'),
                     ),
-                    SizedBox(height: 30.0),
+                    const SizedBox(height: 30.0),
+                    // Name TextField
+                    TextField(
+                      controller: _nameController,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white.withOpacity(0.1),
+                        labelText: 'Name',
+                        labelStyle: const TextStyle(color: Colors.white),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                          borderSide: BorderSide.none,
+                        ),
+                        prefixIcon: const Icon(Icons.person, color: Colors.white),
+                      ),
+                      keyboardType: TextInputType.name,
+                    ),
+                    const SizedBox(height: 20.0),
                     // Email TextField
                     TextField(
                       controller: _emailController,
-                      style: TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white.withOpacity(0.1),
                         labelText: 'Email',
-                        labelStyle: TextStyle(color: Colors.white),
+                        labelStyle: const TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30.0),
                           borderSide: BorderSide.none,
                         ),
-                        prefixIcon: Icon(Icons.email, color: Colors.white),
+                        prefixIcon: const Icon(Icons.email, color: Colors.white),
                       ),
                       keyboardType: TextInputType.emailAddress,
                     ),
-                    SizedBox(height: 30.0),
-                    // Email TextField
-                    TextField(
-                      controller: _nameController,
-                      style: TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white.withOpacity(0.1),
-                        labelText: 'name',
-                        labelStyle: TextStyle(color: Colors.white),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                          borderSide: BorderSide.none,
-                        ),
-                        prefixIcon: Icon(Icons.email, color: Colors.white),
-                      ),
-                      keyboardType: TextInputType.emailAddress,
-                    ),
-                    SizedBox(height: 20.0),
-                    // Address TextField
-                    TextField(
-                      controller: _addressController,
-                      style: TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white.withOpacity(0.1),
-                        labelText: 'Address',
-                        labelStyle: TextStyle(color: Colors.white),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                          borderSide: BorderSide.none,
-                        ),
-                        prefixIcon: Icon(Icons.home, color: Colors.white),
-                      ),
-                      keyboardType: TextInputType.streetAddress,
-                    ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     // Phone Number TextField
                     TextField(
                       controller: _phoneController,
-                      style: TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white.withOpacity(0.1),
                         labelText: 'Phone No',
-                        labelStyle: TextStyle(color: Colors.white),
+                        labelStyle: const TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30.0),
                           borderSide: BorderSide.none,
                         ),
-                        prefixIcon: Icon(Icons.phone, color: Colors.white),
+                        prefixIcon: const Icon(Icons.phone, color: Colors.white),
                       ),
                       keyboardType: TextInputType.phone,
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
+                    // DOB TextField
+                    TextField(
+                      controller: _dobController,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white.withOpacity(0.1),
+                        labelText: 'DOB',
+                        labelStyle: const TextStyle(color: Colors.white),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                          borderSide: BorderSide.none,
+                        ),
+                        prefixIcon: const Icon(Icons.calendar_today, color: Colors.white),
+                      ),
+                      keyboardType: TextInputType.datetime,
+                    ),
+                    const SizedBox(height: 20.0),
+                    // Address TextField
+                    TextField(
+                      controller: _addressController,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white.withOpacity(0.1),
+                        labelText: 'Address',
+                        labelStyle: const TextStyle(color: Colors.white),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                          borderSide: BorderSide.none,
+                        ),
+                        prefixIcon: const Icon(Icons.home, color: Colors.white),
+                      ),
+                      keyboardType: TextInputType.streetAddress,
+                    ),
+                    const SizedBox(height: 20.0),
                     // Password TextField
                     TextField(
                       controller: _passwordController,
-                      style: TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white.withOpacity(0.1),
                         labelText: 'Password',
-                        labelStyle: TextStyle(color: Colors.white),
+                        labelStyle: const TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30.0),
                           borderSide: BorderSide.none,
                         ),
-                        prefixIcon: Icon(Icons.lock, color: Colors.white),
+                        prefixIcon: const Icon(Icons.lock, color: Colors.white),
                       ),
                       obscureText: true,
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
+                    // Confirm Password TextField
+                    TextField(
+                      controller: _confirmPasswordController,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white.withOpacity(0.1),
+                        labelText: 'Confirm Password',
+                        labelStyle: const TextStyle(color: Colors.white),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                          borderSide: BorderSide.none,
+                        ),
+                        prefixIcon: const Icon(Icons.lock, color: Colors.white),
+                      ),
+                      obscureText: true,
+                    ),
+                    const SizedBox(height: 20.0),
                     // Sign Up Button
                     ElevatedButton(
                       onPressed: () {
@@ -158,21 +195,23 @@ class _SignInPageState extends State<SignInPage> {
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white, backgroundColor: Colors.purple, padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.purple,
+                        padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0),
                         ), // Text color
-                        textStyle: TextStyle(fontSize: 18.0),
+                        textStyle: const TextStyle(fontSize: 18.0),
                       ),
                       child: const Text('Sign Up'),
                     ),
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     // Login Button
                     TextButton(
                       onPressed: () {
                         Navigator.pushReplacementNamed(context, '/login');
                       },
-                      child: Text(
+                      child: const Text(
                         'Login',
                         style: TextStyle(color: Colors.white),
                       ),

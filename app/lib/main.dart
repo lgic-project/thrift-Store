@@ -1,9 +1,10 @@
-import 'package:app/Purchase.dart';
 import 'package:app/homepage.dart';
 import 'package:app/login.dart';
 import 'package:app/navbar.dart';
 import 'package:app/signin.dart';
+import 'package:app/Purchase.dart';
 import 'package:flutter/material.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -19,16 +20,13 @@ class MyApp extends StatelessWidget {
       ),
       home: LoginPage(), 
       routes: {
-          '/home': (context) => HomePage(),
-          '/signup': (context) => SignInPage(),
-          '/login': (context) => LoginPage(),
-          '/navbar': (context) => const NavigatorScaffold(),
-          '/logout': (context) => HomePage(),
-          '/purchase': (context) => const Purchase(),
-        },
+        '/home': (context) => HomePage(),
+        '/signup': (context) => SignInPage(),
+        '/login': (context) => LoginPage(),
+        '/navbar': (context) => const NavigatorScaffold(),
+        '/logout': (context) => HomePage(),
+        '/purchase': (context) => const Purchase(),
+      },
     );
   }
 }
-
-
-
