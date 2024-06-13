@@ -1,3 +1,4 @@
+import 'package:app/login.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -27,7 +28,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             SizedBox(height: 20),
             Text(
-              'anish thapa',
+              'user02',
               style: TextStyle(
                 fontSize: 23,
                 fontWeight: FontWeight.bold,
@@ -35,7 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             SizedBox(height: 10),
             Text(
-              'thapaanish793@gmail.com',
+              'user02@gmail.com',
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.grey,
@@ -74,6 +75,7 @@ class _ProfilePageState extends State<ProfilePage> {
               leading: Icon(Icons.logout),
               title: Text('logout'),
               onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));
                 // handle logout
               },
             ),
