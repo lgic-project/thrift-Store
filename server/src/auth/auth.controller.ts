@@ -61,4 +61,10 @@ export class AuthController {
   ) {
     return this.authService.updateProfile(userId, dto, file);
   }
+
+  @Post('logout')
+  @HttpCode(HttpStatus.OK)
+  logout(@GetCurrentUserId() userId: string) {
+    return this.authService.logout(userId);
+  }
 }
