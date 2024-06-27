@@ -55,6 +55,10 @@ export default function RootLayout() {
             options={{ headerTransparent: true, title: "" }}
           />
           <Stack.Screen
+            name="shop/[shopInfo]"
+            options={{ title: "Shop" }}
+          />
+          <Stack.Screen
             name="cart/[cart]"
             options={{ headerTransparent: true, title: "" }}
           />

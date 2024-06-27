@@ -65,7 +65,7 @@ const ProfileInfo = () => {
         />
         <CustomButton
           title="Shop"
-          handlePress={() => {}}
+          handlePress={() => {router.push(`/shop/${1}`);}}
           containerStyles="w-[100px] bg-[#F1EAEA] h-[38px]"
           textStyles="text-black font-pSemibold text-[14px]"
         />
