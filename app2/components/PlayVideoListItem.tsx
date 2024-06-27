@@ -42,7 +42,8 @@ const PlayVideoListItem: React.FC<PlayVideoListItemProps> = ({
 }) => {
   const videoRef = useRef<ExpoVideo>(null);
   const [status, setStatus] = useState<AVPlaybackStatus | {}>({});
-  const [modalVisible, setModalVisible] = useState(false); // State to control the visibility of the modal
+  const [modalVisible, setModalVisible] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const BottomTabHeight = useBottomTabBarHeight();
   const topTabBarHeight = 50; // Adjust this value according to your top tab bar height
   const screenHeight =
@@ -61,7 +62,7 @@ const PlayVideoListItem: React.FC<PlayVideoListItemProps> = ({
   };
 
   useEffect(() => {
-    if (activeIndex === index && activeTab === screenTab) {
+    if (activeIndex === index && activeTab === screenTab && !isPaused) {
       videoRef.current?.playAsync().catch((error) => {
         console.error("Error playing video:", error);
       });
@@ -70,7 +71,20 @@ const PlayVideoListItem: React.FC<PlayVideoListItemProps> = ({
         console.error("Error pausing video:", error);
       });
     }
-  }, [activeIndex, activeTab, screenTab]);
+  }, [activeIndex, activeTab, screenTab, isPaused]);
+
+  const togglePlayPause = () => {
+    if (isPaused) {
+      videoRef.current?.playAsync().catch((error) => {
+        console.error("Error playing video:", error);
+      });
+    } else {
+      videoRef.current?.pauseAsync().catch((error) => {
+        console.error("Error pausing video:", error);
+      });
+    }
+    setIsPaused(!isPaused);
+  };
 
   return (
     <View style={{ height: screenHeight }}>
@@ -83,7 +97,7 @@ const PlayVideoListItem: React.FC<PlayVideoListItemProps> = ({
         <View className="flex-col">
           <TouchableOpacity
             className="bg-white flex-row h-28 rounded-2xl p-2 mb-5"
-            onPress={() => setModalVisible(true)} // Show the modal when pressed
+            onPress={() => setModalVisible(true)}
           >
             <Image
               source={{ uri: video.profilePic }}
@@ -182,18 +196,28 @@ const PlayVideoListItem: React.FC<PlayVideoListItemProps> = ({
           </LinearGradient>
         </View>
       </View>
-      <ExpoVideo
-        ref={videoRef}
-        style={[styles.video, { height: screenHeight }]}
-        source={{
-          uri: video.url,
-        }}
-        useNativeControls={false}
-        resizeMode={ResizeMode.COVER}
-        isLooping
-        shouldPlay={activeIndex === index && activeTab === screenTab}
-        onPlaybackStatusUpdate={(status) => setStatus(status)}
-      />
+      <TouchableOpacity
+        style={{ height: screenHeight, justifyContent: "center" }}
+        onPress={togglePlayPause}
+      >
+        {isPaused && (
+          <View style={styles.pauseOverlay}>
+            <TabBarIcon name="play-circle" size={64} color="white" />
+          </View>
+        )}
+        <ExpoVideo
+          ref={videoRef}
+          style={[styles.video, { height: screenHeight }]}
+          source={{
+            uri: video.url,
+          }}
+          useNativeControls={false}
+          resizeMode={ResizeMode.COVER}
+          isLooping
+          shouldPlay={activeIndex === index && activeTab === screenTab}
+          onPlaybackStatusUpdate={(status) => setStatus(status)}
+        />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -202,6 +226,13 @@ const styles = StyleSheet.create({
   video: {
     alignSelf: "center",
     width: Dimensions.get("window").width,
+  },
+  pauseOverlay: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: [{ translateX: -32 }, { translateY: -32 }],
+    zIndex: 10,
   },
 });
 
