@@ -1,16 +1,18 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
-import { SignInDto, SignUpDto } from './dto/auth.dto';
+import { SignInDto, SignUpDto, UpdateProfileDto } from './dto/auth.dto';
 import { Tokens } from './types';
 import { District } from 'states-nepal';
 import * as bcrypt from 'bcrypt';
 import { Role } from '@prisma/client';
+import { StorageService } from 'src/storage/storage.service';
 @Injectable()
 export class AuthService {
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService,
+    private readonly storageService: StorageService,
   ) {}
 
   async signUp(dto: SignUpDto): Promise<Tokens> {
@@ -115,6 +117,7 @@ export class AuthService {
       const tokens = await this.signToken(
         newUser.id,
         newUser.phone,
+        newUser.email,
         newUser.role,
       );
       await this.updateRtHash(newUser.id, tokens.refresh_token);
@@ -140,7 +143,12 @@ export class AuthService {
 
     if (!passwordMatch) throw new ForbiddenException();
 
-    const tokens = await this.signToken(user.id, user.phone, user.role);
+    const tokens = await this.signToken(
+      user.id,
+      user.phone,
+      user.email,
+      user.role,
+    );
 
     await this.updateRtHash(user.id, tokens.refresh_token);
 
@@ -151,11 +159,17 @@ export class AuthService {
     return bcrypt.hash(data, 10);
   }
 
-  async signToken(userId: string, phone: string, role: Role): Promise<Tokens> {
+  async signToken(
+    userId: string,
+    phone: string,
+    email: string,
+    role: Role,
+  ): Promise<Tokens> {
     const [at, rt] = await Promise.all([
       this.jwtService.signAsync(
         {
           id: userId,
+          email,
           phone,
           role,
         },
@@ -164,6 +178,7 @@ export class AuthService {
       this.jwtService.signAsync(
         {
           id: userId,
+          email,
           phone,
           role,
         },
@@ -186,5 +201,59 @@ export class AuthService {
         hashRt: hash,
       },
     });
+  }
+
+  async getMe(userId: string) {
+    return this.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        id: true,
+        email: true,
+        phone: true,
+        role: true,
+        disabled_by_admin: true,
+        kycVerified: true,
+        Profile: true,
+        KYC: true,
+      },
+    });
+  }
+
+  async updateProfile(
+    userId: string,
+    dto: UpdateProfileDto,
+    file: Express.Multer.File,
+  ) {
+    let url: string = '';
+    if (file) {
+      url = await this.storageService.uploadPhoto(file);
+    }
+    const update = this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        Profile: {
+          update: {
+            name: dto.name,
+            avatar: url,
+            referralCode: dto.referralCode,
+          },
+        },
+      },
+      select: {
+        id: true,
+        email: true,
+        phone: true,
+        role: true,
+        disabled_by_admin: true,
+        kycVerified: true,
+        Profile: true,
+        KYC: true,
+      },
+    });
+    return update;
   }
 }
