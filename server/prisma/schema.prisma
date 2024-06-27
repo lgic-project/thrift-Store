@@ -21,9 +21,11 @@ model User {
   hashRt            String?
   role              Role     @default(USER)
   disabled_by_admin Boolean  @default(false)
+  kycVerified       Boolean  @default(false)
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
   Profile           Profile?
+  KYC               KYC?
 
   @@map("users")
 }
@@ -49,9 +51,32 @@ model Profile {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model KYC {
+  id        String   @id() @default(uuid())
+  nid       String   @unique
+  nidFront  String
+  nidBack   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Product {
+  id          String   @id() @default(uuid())
+  name        String
+  description String
+  price       Float
+  image       String
+  video       String
+  stock       Int
+  category    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
 enum Role {
   SUPERADMIN
-  ADMIN
-  CLIENT
   USER
 }
