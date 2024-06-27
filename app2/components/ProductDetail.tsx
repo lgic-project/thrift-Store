@@ -16,6 +16,8 @@ import { TabBarIcon } from "./navigation/TabBarIcon";
 import { StarRatingDisplay } from "react-native-star-rating-widget";
 import CustomButton from "./CustomButton";
 import PagerView from "react-native-pager-view";
+import { useNavigation, usePathname, useRouter } from "expo-router";
+import { NavigationProp } from "@react-navigation/native";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -82,11 +84,20 @@ const ProductDetail: React.FC = () => {
       </View>
     );
   };
+  const pathname = usePathname();
+  const router = useRouter();
 
+  const handleClick = () => {
+    if (pathname.startsWith("/cart")) {
+      router.push(`/cart/${1}`);
+    } else {
+      router.push(`/cart/${2}`);
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.cartIconContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleClick}>
           <TabBarIcon name="cart-outline" size={26} color="black" />
         </TouchableOpacity>
       </View>
@@ -99,9 +110,7 @@ const ProductDetail: React.FC = () => {
             onPageSelected={(e) => setActivePage(e.nativeEvent.position)}
           >
             {ImageList.map((item) => (
-              <Animated.View
-                key={item.id.toString()}
-              >
+              <Animated.View key={item.id.toString()}>
                 <Image
                   source={{ uri: item.image }}
                   style={styles.productImage}
@@ -214,9 +223,9 @@ const styles = StyleSheet.create({
   },
   cartIconContainer: {
     position: "absolute",
-    top: 44,
+    top: 320,
     right: 16,
-    zIndex: 10,
+    zIndex: 99,
   },
   imageContainer: {
     height: 335,
