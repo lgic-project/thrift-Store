@@ -13,6 +13,7 @@ import { TabBarIcon } from "./navigation/TabBarIcon";
 import { LinearGradient } from "expo-linear-gradient";
 import CustomButton from "./CustomButton";
 import ProductPopover from "./ProductPopover";
+import { usePathname, useRouter } from "expo-router";
 
 interface VideoData {
   id: number;
@@ -48,6 +49,16 @@ const PlayVideoListItem: React.FC<PlayVideoListItemProps> = ({
     Dimensions.get("window").height - BottomTabHeight - topTabBarHeight;
 
   const [liked, setLiked] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const handleClick = () => {
+    if (pathname.startsWith("/cart")) {
+      router.push(`/cart/${1}`);
+    } else {
+      router.push(`/cart/${2}`);
+    }
+  };
 
   useEffect(() => {
     if (activeIndex === index && activeTab === screenTab) {
@@ -135,8 +146,18 @@ const PlayVideoListItem: React.FC<PlayVideoListItemProps> = ({
         </View>
         <View className="items-center justify-center gap-6">
           <View className="flex justify-center items-center">
+            <TouchableOpacity onPress={handleClick}>
+              <TabBarIcon name="cart-sharp" color="white" size={38} />
+            </TouchableOpacity>
+            <Text className="text-white mt-1">3</Text>
+          </View>
+          <View className="flex justify-center items-center">
             <TouchableOpacity onPress={() => setLiked(!liked)}>
-              <TabBarIcon name="heart" color={`${liked?'#F11A42':'white'}`} size={38} />
+              <TabBarIcon
+                name="heart"
+                color={`${liked ? "#F11A42" : "white"}`}
+                size={38}
+              />
             </TouchableOpacity>
             <Text className="text-white mt-1">4445</Text>
           </View>
