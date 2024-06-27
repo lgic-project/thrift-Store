@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { AtGuard, UserCheckGuard } from './common/guards';
 import { APP_GUARD } from '@nestjs/core';
 import { StorageModule } from './storage/storage.module';
+import { UserModule } from './user/user.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -13,6 +14,7 @@ import { StorageModule } from './storage/storage.module';
     PrismaModule,
     StorageModule,
     AuthModule,
+    UserModule,
   ],
   providers: [
     {
