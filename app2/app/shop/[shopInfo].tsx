@@ -133,7 +133,7 @@ const filterList = [
   },
 ];
 
-const Discover = () => {
+const ShopInfo = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("Explore");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const productId = 1;
@@ -164,7 +164,7 @@ const Discover = () => {
 
   return (
     <SafeAreaView style={styles.container} className={`h-full`}>
-      <View className="pt-5 pb-5">
+      <View className="pb-5">
         <SearchProduct
           placeholder="Search"
           additionStyle="h-14"
@@ -235,4 +235,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Discover;
+export default ShopInfo;

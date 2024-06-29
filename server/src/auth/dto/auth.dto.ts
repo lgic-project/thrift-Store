@@ -79,3 +79,13 @@ export class SignUpDto {
   @IsString()
   ward: string;
 }
+
+export class UpdateProfileDto {
+  @IsOptional()
+  @IsString()
+  name: string;
+
+  @IsOptional()
+  @IsString()
+  referralCode: string;
+}

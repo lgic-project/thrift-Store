@@ -9,6 +9,7 @@ import React from "react";
 import { TabBarIcon } from "./navigation/TabBarIcon";
 import InfoBox from "./InfoBox";
 import CustomButton from "./CustomButton";
+import { router } from "expo-router";
 
 const ProfileInfo = () => {
   const colorScheme = useColorScheme();
@@ -64,13 +65,15 @@ const ProfileInfo = () => {
         />
         <CustomButton
           title="Shop"
-          handlePress={() => {}}
+          handlePress={() => {router.push(`/shop/${1}`);}}
           containerStyles="w-[100px] bg-[#F1EAEA] h-[38px]"
           textStyles="text-black font-pSemibold text-[14px]"
         />
         <CustomButton
           title="Message"
-          handlePress={() => {}}
+          handlePress={() => {
+            router.push(`/chat/${1}`);
+          }}
           containerStyles="w-[100px] bg-[#F1EAEA] h-[38px]"
           textStyles="text-black font-pSemibold text-[14px]"
         />

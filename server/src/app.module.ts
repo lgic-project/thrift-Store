@@ -4,13 +4,17 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { AtGuard, UserCheckGuard } from './common/guards';
 import { APP_GUARD } from '@nestjs/core';
+import { StorageModule } from './storage/storage.module';
+import { UserModule } from './user/user.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
     PrismaModule,
+    StorageModule,
     AuthModule,
+    UserModule,
   ],
   providers: [
     {
@@ -24,3 +28,9 @@ import { APP_GUARD } from '@nestjs/core';
   ],
 })
 export class AppModule {}
+
+// export class AppModule implements NestModule {
+//   configure(consumer: MiddlewareConsumer) {
+//     consumer.apply(LoggerMiddleware).forRoutes('*');
+//   }
+// }
