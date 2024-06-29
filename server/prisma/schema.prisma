@@ -54,6 +54,7 @@ model Profile {
 model KYC {
   id        String   @id() @default(uuid())
   nid       String   @unique
+  nidType   KYCType  @default(CITIZENSHIP)
   nidFront  String
   nidBack   String
   createdAt DateTime @default(now())
@@ -79,4 +80,10 @@ model Product {
 enum Role {
   SUPERADMIN
   USER
+}
+
+enum KYCType {
+  CITIZENSHIP
+  PASSPORT
+  DRIVING_LICENSE
 }
