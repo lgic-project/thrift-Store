@@ -23,4 +23,13 @@ export class StorageService {
     });
     return res.url;
   }
+
+  async uploadVideo(file: Express.Multer.File): Promise<string> {
+    const res = await this.imageKit.upload({
+      file: file.buffer,
+      fileName: file.originalname,
+      folder: '/uploads/videos',
+    });
+    return res.url;
+  }
 }

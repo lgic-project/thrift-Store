@@ -7,6 +7,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { StorageModule } from './storage/storage.module';
 import { UserModule } from './user/user.module';
 import { KycModule } from './kyc/kyc.module';
+import { ProductModule } from './product/product.module';
 import { CategoryModule } from './category/category.module';
 import { FollowModule } from './follow/follow.module';
 @Module({
@@ -19,6 +20,7 @@ import { FollowModule } from './follow/follow.module';
     AuthModule,
     UserModule,
     KycModule,
+    ProductModule,
     CategoryModule,
     FollowModule,
   ],

@@ -47,7 +47,7 @@ model Profile {
   temporaryAddress String
   dob              String
   occupation       String
-  voterId          String?   @unique
+  voterId          String?  @unique
   referralCode     String?
   avatar           String?
   province         Int
@@ -86,6 +86,7 @@ model Product {
   stock             Int
   createdAt         DateTime         @default(now())
   updatedAt         DateTime         @updatedAt
+  visibility        Boolean          @default(true)
   ProductImages     String[]
   Like              Like[]
   ProductReview     ProductReview[]
@@ -137,13 +138,17 @@ model ProductReview {
 
 model Like {
   id        String   @id() @default(uuid())
-  productId String
+  productId String?
   userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Comment   Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  commentId String?
 
-  Product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  User    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([userId, productId], name: "userId_productId")
+  @@unique([userId, commentId], name: "userId_commentId")
 }
 
 model Comment {
@@ -153,9 +158,9 @@ model Comment {
   comment   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  Product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  User    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Like      Like[]
+  Product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Follow {

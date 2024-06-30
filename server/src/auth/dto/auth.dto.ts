@@ -59,7 +59,7 @@ export class SignUpDto {
   @IsString()
   occupation: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   voterId: string;
 
