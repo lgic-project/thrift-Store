@@ -1,8 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// Adjustments to the schema include adding indexes to frequently queried fields for performance optimization.
 
 generator client {
   provider = "prisma-client-js"
@@ -14,26 +10,38 @@ datasource db {
 }
 
 model User {
-  id                String   @id @default(cuid())
-  email             String   @unique
-  phone             String   @unique
+  id                String          @id @default(cuid())
+  email             String          @unique
+  phone             String          @unique
   password          String
   hashRt            String?
-  role              Role     @default(USER)
-  disabled_by_admin Boolean  @default(false)
-  kycVerified       Boolean  @default(false)
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  role              Role            @default(USER)
+  disabled_by_admin Boolean         @default(false)
+  kycVerified       Boolean         @default(false)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
   Profile           Profile?
   KYC               KYC?
+  ProductReview     ProductReview[]
+  Like              Like[]
+  Comment           Comment[]
+  Follows           Follow[]        @relation("Follower")
+  Following         Follow[]        @relation("Following")
+  Notification      Notification[]
+  Order             Order[]
+  Cart              Cart[]
+  Sender            Chat[]          @relation("Sender")
+  Receiver          Chat[]          @relation("Receiver")
+  ORCode            ORCode?
 
+  @@index([email, phone], name: "userEmailPhoneIdx")
   @@map("users")
 }
 
 model Profile {
-  id               String   @id() @default(uuid())
+  id               String   @id @default(uuid())
   name             String
-  username         String
+  username         String   @unique
   permanentAddress String
   temporaryAddress String
   dob              String
@@ -50,10 +58,12 @@ model Profile {
 
   userId String @unique
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([username, voterId], name: "profileUsernameVoterIdIdx")
 }
 
 model KYC {
-  id        String   @id() @default(uuid())
+  id        String   @id @default(uuid())
   nid       String   @unique
   nidType   KYCType  @default(CITIZENSHIP)
   nidFront  String
@@ -63,19 +73,184 @@ model KYC {
 
   userId String @unique
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([nid], name: "kycNidIdx")
 }
 
 model Product {
+  id            String            @id @default(uuid())
+  name          String
+  description   String
+  price         Float
+  ProductImages ProductImages[]
+  thumbnail     String
+  video         String
+  stock         Int
+  category      ProductCategory[]
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  ProductReview ProductReview[]
+  Like          Like[]
+  Comment       Comment[]
+  ProductColor  ProductColor[]
+  ProductSize   ProductSize[]
+  Order         Order[]
+  Cart          Cart[]
+
+  @@index([name, price], name: "productNamePriceIdx")
+}
+
+model ProductImages {
+  id        String   @id @default(uuid())
+  productId String
+  image     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model ProductColor {
+  id        String   @id @default(uuid())
+  productId String
+  color     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model ProductSize {
+  id        String   @id @default(uuid())
+  productId String
+  size      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model ProductCategory {
+  id        String   @id() @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Product   Product? @relation(fields: [productId], references: [id])
+  productId String?
+
+  @@index([name], name: "productCategoryNameIdx")
+}
+
+model ProductReview {
+  id        String   @id() @default(uuid())
+  productId String
+  reviwerId String
+  rating    Int
+  review    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  User    User    @relation(fields: [reviwerId], references: [id], onDelete: Cascade)
+}
+
+model Like {
+  id        String   @id() @default(uuid())
+  productId String
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  User    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Comment {
+  id        String   @id() @default(uuid())
+  productId String
+  userId    String
+  comment   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  User    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Follow {
   id          String   @id() @default(uuid())
-  name        String
-  description String
-  price       Float
-  image       String
-  video       String
-  stock       Int
-  category    String
+  followerId  String
+  followingId String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  follower  User @relation("Follower", fields: [followerId], references: [id], onDelete: Cascade)
+  following User @relation("Following", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followingId])
+  @@index([followerId, followingId], name: "followFollowerFollowingIdx")
+}
+
+model Notification {
+  id        String           @id() @default(uuid())
+  userId    String
+  type      NotificationType
+  message   String
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Cart {
+  id          String   @id() @default(uuid())
+  userId      String
+  productId   String
+  quantity    Int
+  totalAmount Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  User    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([userId, productId], name: "cartUserIdProductIdIdx")
+}
+
+model Order {
+  id          String   @id() @default(uuid())
+  userId      String
+  productId   String
+  quantity    Int
+  totalAmount Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  User    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([userId, productId], name: "orderUserIdProductIdIdx")
+}
+
+model Chat {
+  id         String   @id @default(uuid())
+  senderId   String
+  receiverId String
+  message    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  sender   User @relation("Sender", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver User @relation("Receiver", fields: [receiverId], references: [id], onDelete: Cascade)
+}
+
+model ORCode {
+  id        String   @id @default(uuid())
+  qrCode    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 enum Role {
@@ -87,4 +262,15 @@ enum KYCType {
   CITIZENSHIP
   PASSPORT
   DRIVING_LICENSE
+}
+
+enum NotificationType {
+  ORDER
+  FOLLOW
+  LIKE
+  COMMENT
+  CHAT
+  REVIEW
+  KYC
+  ADMIN
 }
