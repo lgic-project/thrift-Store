@@ -1,13 +1,20 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { KycDTO } from './dto/kyc.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { StorageService } from 'src/storage/storage.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { KycVerificationEvent } from 'src/events/KycVerification';
 
 @Injectable()
 export class KycService {
   constructor(
     private prisma: PrismaService,
     private readonly storageService: StorageService,
+    private eventEmitter: EventEmitter2,
   ) {}
 
   async fillKYC(
@@ -180,6 +187,11 @@ export class KycService {
         },
       },
     });
+
+    this.eventEmitter.emit(
+      'kyc.verified',
+      new KycVerificationEvent(kyc.user.id, 'KYC verified successfully'),
+    );
 
     return {
       message: 'KYC verified successfully',

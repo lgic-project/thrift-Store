@@ -6,12 +6,15 @@ import {
 import { PrismaService } from 'src/prisma/prisma.service';
 import { StorageService } from 'src/storage/storage.service';
 import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { ProductLikeEvent } from 'src/events/ProductLike';
 
 @Injectable()
 export class ProductService {
   constructor(
     private prisma: PrismaService,
     private readonly storageService: StorageService,
+    private eventEmitter: EventEmitter2,
   ) {}
 
   async create(
@@ -363,6 +366,15 @@ export class ProductService {
         productId,
       },
     });
+
+    this.eventEmitter.emit(
+      'product_like',
+      new ProductLikeEvent(
+        productId,
+        product.userId,
+        'someone liked your product',
+      ),
+    );
 
     return {
       message: 'Like added successfully',

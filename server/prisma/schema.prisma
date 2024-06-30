@@ -34,6 +34,7 @@ model User {
   Receiver          Chat[]             @relation("Receiver")
   ORCode            ORCode?
   Product           Product[]
+  NotificationToken NotificationToken?
 
   @@index([email, phone], name: "userEmailPhoneIdx")
   @@map("users")
@@ -191,6 +192,14 @@ model Notification {
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model NotificationToken {
+  id    Int    @id @default(autoincrement())
+  token String
+
+  userId String @unique
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
 model Cart {
   id          String   @id() @default(uuid())
   userId      String
@@ -261,5 +270,4 @@ enum NotificationType {
   CHAT
   REVIEW
   KYC
-  ADMIN
 }

@@ -16,10 +16,17 @@ import { SharpInterceptor } from 'src/Interceptor/sharp-interceptor';
 import { GetCurrentUserId, Roles } from 'src/common/decorators';
 import { KycDTO } from './dto/kyc.dto';
 import { RoleGuard } from 'src/common/guards';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { NotificationService } from 'src/notification/notification.service';
+import { OnEvent } from '@nestjs/event-emitter';
 
 @Controller('kyc')
 export class KycController {
-  constructor(private readonly kycService: KycService) {}
+  constructor(
+    private prisma: PrismaService,
+    private readonly kycService: KycService,
+    private notification: NotificationService,
+  ) {}
 
   @Post('/')
   @UseInterceptors(
@@ -73,5 +80,22 @@ export class KycController {
   @UseGuards(RoleGuard)
   async verifyKYC(@Param('kycId') kycId: string) {
     return this.kycService.verifyKYC(kycId);
+  }
+
+  @OnEvent('kyc.verified')
+  async handleKYCVerifiedEvent(payload: { userId: string }) {
+    await this.prisma.notification.create({
+      data: {
+        title: 'KYC Verified',
+        description: `Your KYC has been verified`,
+        userId: payload.userId,
+        type: 'KYC',
+      },
+    });
+    await this.notification.send(
+      payload.userId,
+      'KYC Verified',
+      `Your KYC has been verified`,
+    );
   }
 }

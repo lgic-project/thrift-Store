@@ -1,10 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ReviewDto } from './dto/review.dto';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { NewReviewEvent } from 'src/events/NewReview';
 
 @Injectable()
 export class ReviewService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private eventEmitter: EventEmitter2,
+  ) {}
 
   async review(userId: string, productId: string, dto: ReviewDto) {
     const product = await this.prisma.product.findUnique({
@@ -34,6 +39,11 @@ export class ReviewService {
         productId,
       },
     });
+
+    this.eventEmitter.emit(
+      'new_review',
+      new NewReviewEvent(review.id, product.userId, dto.review),
+    );
 
     return review;
   }
