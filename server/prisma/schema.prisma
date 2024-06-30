@@ -124,16 +124,18 @@ model ProductCategory {
 }
 
 model ProductReview {
-  id        String   @id() @default(uuid())
-  productId String
-  reviwerId String
-  rating    Int
-  review    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String   @id() @default(uuid())
+  productId  String
+  reviewerId String
+  rating     Int
+  review     String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   Product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  User    User    @relation(fields: [reviwerId], references: [id], onDelete: Cascade)
+  User    User    @relation(fields: [reviewerId], references: [id], onDelete: Cascade)
+
+  @@unique([reviewerId, productId], name: "reviewerId_productId")
 }
 
 model Like {
