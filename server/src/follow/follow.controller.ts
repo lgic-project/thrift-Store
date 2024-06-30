@@ -30,7 +30,6 @@ export class FollowController {
         userId: payload.followedId,
       },
     });
-    console.log('user', user)
     await this.prisma.notification.create({
       data: {
         title: 'New Follower',

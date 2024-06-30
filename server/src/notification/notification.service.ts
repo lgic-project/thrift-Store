@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import {
+  CreateNotificationDto,
   SendNotificationsDTO,
 } from './dto/notification.dto';
 import axios from 'axios';
@@ -17,6 +18,34 @@ export class NotificationService {
     });
   }
 
+  async registerToken(userId: string, dto: CreateNotificationDto) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    await this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        NotificationToken: {
+          upsert: {
+            create: {
+              token: dto.token,
+            },
+            update: {
+              token: dto.token,
+            },
+          },
+        },
+      },
+    });
+    return true;
+  }
   async notification(dto: SendNotificationsDTO) {
     try {
       const notificationTokens = await this.prisma.notificationToken.findMany();

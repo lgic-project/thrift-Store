@@ -16,10 +16,19 @@ import { CreateProductDto } from './dto/product.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 import { SharpInterceptor } from 'src/Interceptor/sharp-interceptor';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { NotificationService } from 'src/notification/notification.service';
+import { OnEvent } from '@nestjs/event-emitter';
+import { ProductLikeEvent } from 'src/events/ProductLike';
+import { NotificationType } from '@prisma/client';
 
 @Controller('product')
 export class ProductController {
-  constructor(private readonly productService: ProductService) {}
+  constructor(
+    private prisma: PrismaService,
+    private readonly productService: ProductService,
+    private notification: NotificationService,
+  ) {}
 
   @Post()
   @UseInterceptors(
@@ -116,5 +125,27 @@ export class ProductController {
     @Param('productId') productId: string,
   ) {
     return this.productService.toggleLike(userId, productId);
+  }
+
+  @OnEvent('product_like')
+  async handleProductLikeEvent(payload: ProductLikeEvent) {
+    const user = await this.prisma.profile.findFirst({
+      where: {
+        userId: payload.userId,
+      },
+    });
+    await this.prisma.notification.create({
+      data: {
+        title: 'New Like',
+        description: `${user.name} liked your product`,
+        userId: payload.userId,
+        type: NotificationType.LIKE,
+      },
+    });
+    await this.notification.send(
+      payload.userId,
+      'New Like',
+      `${user.name} liked your product`,
+    );
   }
 }
