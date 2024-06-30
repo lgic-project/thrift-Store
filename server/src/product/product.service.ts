@@ -6,7 +6,6 @@ import {
 import { PrismaService } from 'src/prisma/prisma.service';
 import { StorageService } from 'src/storage/storage.service';
 import {
-  CommentDto,
   CreateProductDto,
   UpdateProductDto,
 } from './dto/product.dto';
@@ -365,75 +364,6 @@ export class ProductService {
 
     return {
       message: 'Like added successfully',
-    };
-  }
-
-  async comment(userId: string, productId: string, dto: CommentDto) {
-    const product = await this.prisma.product.findUnique({
-      where: {
-        id: productId,
-      },
-    });
-
-    if (!product) {
-      throw new NotFoundException('Product not found');
-    }
-
-    const comment = await this.prisma.comment.create({
-      data: {
-        userId,
-        productId,
-        comment: dto.comment,
-      },
-    });
-
-    return comment;
-  }
-
-  async toggleCommentLike(userId: string, commentId: string) {
-    const comment = await this.prisma.comment.findUnique({
-      where: {
-        id: commentId,
-      },
-    });
-
-    if (!comment) {
-      throw new NotFoundException('Comment not found');
-    }
-
-    const like = await this.prisma.like.findUnique({
-      where: {
-        userId_commentId: {
-          userId,
-          commentId,
-        },
-      },
-    });
-
-    if (like) {
-      await this.prisma.like.delete({
-        where: {
-          userId_commentId: {
-            userId,
-            commentId,
-          },
-        },
-      });
-
-      return {
-        message: 'Like removed successfully from the comment',
-      };
-    }
-
-    await this.prisma.like.create({
-      data: {
-        userId,
-        commentId,
-      },
-    });
-
-    return {
-      message: 'Like added successfully to the comment',
     };
   }
 
