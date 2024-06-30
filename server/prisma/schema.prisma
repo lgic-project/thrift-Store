@@ -33,6 +33,7 @@ model User {
   Sender            Chat[]          @relation("Sender")
   Receiver          Chat[]          @relation("Receiver")
   ORCode            ORCode?
+  Product           Product[]
 
   @@index([email, phone], name: "userEmailPhoneIdx")
   @@map("users")
@@ -82,22 +83,36 @@ model Product {
   name          String
   description   String
   price         Float
-  ProductImages ProductImages[]
-  thumbnail     String
-  video         String
   stock         Int
-  category      ProductCategory[]
   createdAt     DateTime          @default(now())
   updatedAt     DateTime          @updatedAt
-  ProductReview ProductReview[]
+  ProductVedio  ProductVedio?
+  ProductImages ProductImages[]
+  category      ProductCategory[]
   Like          Like[]
+  ProductReview ProductReview[]
   Comment       Comment[]
   ProductColor  ProductColor[]
   ProductSize   ProductSize[]
   Order         Order[]
   Cart          Cart[]
+  userId        String
+  user          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([name, price], name: "productNamePriceIdx")
+}
+
+model ProductVedio {
+  id        String   @id @default(uuid())
+  productId String   @unique
+  thumbnail String
+  video     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId], name: "productVedioProductIdIdx")
 }
 
 model ProductImages {

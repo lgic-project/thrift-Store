@@ -7,6 +7,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { StorageModule } from './storage/storage.module';
 import { UserModule } from './user/user.module';
 import { KycModule } from './kyc/kyc.module';
+import { CategoryModule } from './category/category.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -17,6 +18,7 @@ import { KycModule } from './kyc/kyc.module';
     AuthModule,
     UserModule,
     KycModule,
+    CategoryModule,
   ],
   providers: [
     {
