@@ -1,8 +1,12 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  Param,
+  Patch,
   Post,
+  Put,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
@@ -69,5 +73,65 @@ export class ProductController {
   @Get()
   async fetchAllRandom() {
     return this.productService.fetchAllRandom();
+  }
+
+  @Get('my')
+  async fetchMyProducts(@GetCurrentUserId() userId: string) {
+    return this.productService.fetchMyProducts(userId);
+  }
+
+  @Get('following')
+  async fetchFollowingProducts(@GetCurrentUserId() userId: string) {
+    return this.productService.fetchFollowingProducts(userId);
+  }
+
+  @Put(':productId')
+  async Update(
+    @GetCurrentUserId() userId: string,
+    @Param('productId') productId: string,
+    @Body() dto: CreateProductDto,
+  ) {
+    return this.productService.update(userId, productId, dto);
+  }
+
+  @Patch(':productId')
+  async toggleVisibility(
+    @GetCurrentUserId() userId: string,
+    @Param('productId') productId: string,
+  ) {
+    return this.productService.toggleVisibility(userId, productId);
+  }
+
+  @Delete(':productId')
+  async delete(
+    @GetCurrentUserId() userId: string,
+    @Param('productId') productId: string,
+  ) {
+    return this.productService.delete(userId, productId);
+  }
+
+  @Patch(':productId/like')
+  async toggleLike(
+    @GetCurrentUserId() userId: string,
+    @Param('productId') productId: string,
+  ) {
+    return this.productService.toggleLike(userId, productId);
+  }
+
+  @Post(':productId/comment')
+  async comment(
+    @GetCurrentUserId() userId: string,
+    @Param('productId') productId: string,
+    @Body() dto: { comment: string },
+  ) {
+    return this.productService.comment(userId, productId, dto);
+  }
+
+  @Patch('/comment/:commentId/like')
+  async toggleCommentLike(
+    @GetCurrentUserId() userId: string,
+    @Param('commentId') commentId: string,
+  ) {
+    return this.productService.toggleCommentLike(userId, commentId);
   }
 }

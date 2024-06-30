@@ -34,3 +34,37 @@ export class CreateProductDto {
   @IsString()
   categoryId: string;
 }
+
+export class UpdateProductDto{
+  @IsOptional()
+  @IsString()
+  name: string;
+
+  @IsOptional()
+  @IsString()
+  description: string;
+
+  @IsOptional()
+  price: number;
+
+  @IsOptional()
+  stock: number;
+
+  @IsOptional()
+  @IsArray()
+  colors: string[];
+
+  @IsOptional()
+  @IsArray()
+  sizes: string[];
+
+  @IsOptional()
+  @IsString()
+  categoryId: string;
+}
+
+export class CommentDto{
+  @IsNotEmpty()
+  @IsString()
+  comment: string
+}
