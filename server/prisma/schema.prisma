@@ -79,81 +79,47 @@ model KYC {
 }
 
 model Product {
-  id            String            @id @default(uuid())
-  name          String
-  description   String
-  price         Float
-  stock         Int
-  createdAt     DateTime          @default(now())
-  updatedAt     DateTime          @updatedAt
-  ProductVedio  ProductVedio?
-  ProductImages ProductImages[]
-  category      ProductCategory[]
-  Like          Like[]
-  ProductReview ProductReview[]
-  Comment       Comment[]
-  ProductColor  ProductColor[]
-  ProductSize   ProductSize[]
-  Order         Order[]
-  Cart          Cart[]
-  userId        String
-  user          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                String           @id @default(uuid())
+  name              String
+  description       String
+  price             Int
+  stock             Int
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  ProductImages     String[]
+  Like              Like[]
+  ProductReview     ProductReview[]
+  Comment           Comment[]
+  ProductColor      String[]
+  ProductSize       String[]
+  Order             Order[]
+  Cart              Cart[]
+  userId            String
+  user              User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ProductCategory   ProductCategory? @relation(fields: [productCategoryId], references: [id])
+  productCategoryId String?
+  ProductVideo      ProductVideo?
 
   @@index([name, price], name: "productNamePriceIdx")
 }
 
-model ProductVedio {
+model ProductVideo {
   id        String   @id @default(uuid())
-  productId String   @unique
   thumbnail String
   video     String
+  views     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  Product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-
-  @@index([productId], name: "productVedioProductIdIdx")
-}
-
-model ProductImages {
-  id        String   @id @default(uuid())
-  productId String
-  image     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  Product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-}
-
-model ProductColor {
-  id        String   @id @default(uuid())
-  productId String
-  color     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  Product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-}
-
-model ProductSize {
-  id        String   @id @default(uuid())
-  productId String
-  size      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  Product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String   @unique
+  Product   Product? @relation(fields: [productId], references: [id])
 }
 
 model ProductCategory {
-  id        String   @id() @default(uuid())
+  id        String    @id() @default(uuid())
   name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Product   Product? @relation(fields: [productId], references: [id])
-  productId String?
-
-  @@index([name], name: "productCategoryNameIdx")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Product   Product[]
 }
 
 model ProductReview {
@@ -222,7 +188,7 @@ model Cart {
   userId      String
   productId   String
   quantity    Int
-  totalAmount Float
+  totalAmount Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -237,7 +203,7 @@ model Order {
   userId      String
   productId   String
   quantity    Int
-  totalAmount Float
+  totalAmount Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
