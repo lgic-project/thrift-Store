@@ -7,6 +7,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { StorageModule } from './storage/storage.module';
 import { UserModule } from './user/user.module';
 import { KycModule } from './kyc/kyc.module';
+import { ProductModule } from './product/product.module';
 import { CategoryModule } from './category/category.module';
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { CategoryModule } from './category/category.module';
     AuthModule,
     UserModule,
     KycModule,
+    ProductModule,
     CategoryModule,
   ],
   providers: [
