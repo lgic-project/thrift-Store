@@ -5,10 +5,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { StorageService } from 'src/storage/storage.service';
-import {
-  CreateProductDto,
-  UpdateProductDto,
-} from './dto/product.dto';
+import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
 
 @Injectable()
 export class ProductService {
@@ -128,6 +125,7 @@ export class ProductService {
             Like: true,
           },
         },
+        ProductReview: true,
         user: {
           select: {
             id: true,
@@ -156,6 +154,7 @@ export class ProductService {
             Like: true,
           },
         },
+        ProductReview: true,
         user: {
           select: {
             id: true,
@@ -197,6 +196,7 @@ export class ProductService {
             Like: true,
           },
         },
+        ProductReview: true,
         user: {
           select: {
             id: true,
@@ -258,6 +258,7 @@ export class ProductService {
             Like: true,
           },
         },
+        ProductReview: true,
         user: {
           select: {
             id: true,
@@ -303,6 +304,7 @@ export class ProductService {
             Like: true,
           },
         },
+        ProductReview: true,
         user: {
           select: {
             id: true,
