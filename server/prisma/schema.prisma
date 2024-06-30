@@ -47,7 +47,7 @@ model Profile {
   temporaryAddress String
   dob              String
   occupation       String
-  voterId          String   @unique
+  voterId          String?   @unique
   referralCode     String?
   avatar           String?
   province         Int
