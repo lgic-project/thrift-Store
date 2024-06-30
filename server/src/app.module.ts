@@ -9,6 +9,7 @@ import { UserModule } from './user/user.module';
 import { KycModule } from './kyc/kyc.module';
 import { ProductModule } from './product/product.module';
 import { CategoryModule } from './category/category.module';
+import { FollowModule } from './follow/follow.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -21,6 +22,7 @@ import { CategoryModule } from './category/category.module';
     KycModule,
     ProductModule,
     CategoryModule,
+    FollowModule,
   ],
   providers: [
     {
