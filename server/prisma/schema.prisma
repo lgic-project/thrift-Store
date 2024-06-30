@@ -32,7 +32,7 @@ model User {
   Cart              Cart[]
   Sender            Chat[]             @relation("Sender")
   Receiver          Chat[]             @relation("Receiver")
-  ORCode            ORCode?
+  Qrcode            Qrcode?
   Product           Product[]
   NotificationToken NotificationToken?
 
@@ -242,7 +242,7 @@ model Chat {
   receiver User @relation("Receiver", fields: [receiverId], references: [id], onDelete: Cascade)
 }
 
-model ORCode {
+model Qrcode {
   id        String   @id @default(uuid())
   qrCode    String
   createdAt DateTime @default(now())
