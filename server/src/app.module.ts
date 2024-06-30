@@ -12,6 +12,7 @@ import { CategoryModule } from './category/category.module';
 import { FollowModule } from './follow/follow.module';
 import { CommentModule } from './comment/comment.module';
 import { ReviewModule } from './review/review.module';
+import { CartModule } from './cart/cart.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -27,6 +28,7 @@ import { ReviewModule } from './review/review.module';
     FollowModule,
     CommentModule,
     ReviewModule,
+    CartModule,
   ],
   providers: [
     {
