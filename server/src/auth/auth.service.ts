@@ -37,6 +37,16 @@ export class AuthService {
         );
       }
 
+      const checkUsername = await this.prisma.profile.findFirst({
+        where: {
+          username: dto.username,
+        },
+      });
+
+      if (checkUsername) {
+        throw new ForbiddenException('Username already exists');
+      }
+
       const district = new District();
 
       const allDistricts = district.getDistrictsWithMunicipalities();
