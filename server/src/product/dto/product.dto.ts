@@ -62,9 +62,3 @@ export class UpdateProductDto{
   @IsString()
   categoryId: string;
 }
-
-export class CommentDto{
-  @IsNotEmpty()
-  @IsString()
-  comment: string
-}

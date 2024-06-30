@@ -117,21 +117,4 @@ export class ProductController {
   ) {
     return this.productService.toggleLike(userId, productId);
   }
-
-  @Post(':productId/comment')
-  async comment(
-    @GetCurrentUserId() userId: string,
-    @Param('productId') productId: string,
-    @Body() dto: { comment: string },
-  ) {
-    return this.productService.comment(userId, productId, dto);
-  }
-
-  @Patch('/comment/:commentId/like')
-  async toggleCommentLike(
-    @GetCurrentUserId() userId: string,
-    @Param('commentId') commentId: string,
-  ) {
-    return this.productService.toggleCommentLike(userId, commentId);
-  }
 }
