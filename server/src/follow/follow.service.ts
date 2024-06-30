@@ -1,9 +1,17 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { NewFollowerEvent } from 'src/events/NewFollower';
 @Injectable()
 export class FollowService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private eventEmitter: EventEmitter2,
+  ) {}
 
   async followUser(followerId: string, followingId: string) {
     const checkUser = await this.prisma.user.findUnique({
@@ -17,9 +25,9 @@ export class FollowService {
         'The user you are trying to follow does not exist',
       );
     }
-    
+
     const checkSelfFollow = followerId === followingId;
-    
+
     if (checkSelfFollow) {
       throw new BadRequestException('You cannot follow yourself');
     }
@@ -46,6 +54,14 @@ export class FollowService {
           followingId,
         },
       });
+      this.eventEmitter.emit(
+        'follow',
+        new NewFollowerEvent(
+          followerId,
+          followingId,
+          'You have a new follower',
+        ),
+      );
       return {
         message: 'You followed the user',
       };

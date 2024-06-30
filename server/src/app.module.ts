@@ -13,11 +13,14 @@ import { FollowModule } from './follow/follow.module';
 import { CommentModule } from './comment/comment.module';
 import { ReviewModule } from './review/review.module';
 import { CartModule } from './cart/cart.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { NotificationModule } from './notification/notification.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    EventEmitterModule.forRoot(),
     PrismaModule,
     StorageModule,
     AuthModule,
@@ -29,6 +32,7 @@ import { CartModule } from './cart/cart.module';
     CommentModule,
     ReviewModule,
     CartModule,
+    NotificationModule,
   ],
   providers: [
     {
