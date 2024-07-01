@@ -4,27 +4,51 @@ import {
   Image,
   TouchableOpacity,
   useColorScheme,
+  Alert,
 } from "react-native";
 import React from "react";
 import { TabBarIcon } from "./navigation/TabBarIcon";
 import InfoBox from "./InfoBox";
 import CustomButton from "./CustomButton";
-import { router, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
+import { logout } from "@/api/userApi";
 
 const ProfileInfo = () => {
   const colorScheme = useColorScheme();
   const router = useRouter();
+
+  const handleLogout = async () => {
+    Alert.alert(
+      "Logout",
+      "Are you sure you want to logout?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Yes",
+          onPress: async () => {
+            try {
+              await logout();
+              router.replace("/");
+            } catch (error) {
+              console.log(error);
+            }
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
   return (
     <View className="w-full justify-center items-center mt-6 mb-12 px-4">
       <View className="w-full flex-row justify-between mb-10">
         <TouchableOpacity onPress={() => {}}>
           <TabBarIcon name="swap-horizontal-outline" color={"gray"} />
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            router.push("/(auth)/signIn");
-          }}
-        >
+        <TouchableOpacity onPress={handleLogout}>
           <TabBarIcon name="log-out-outline" size={24} color={"red"} />
         </TouchableOpacity>
       </View>
@@ -70,17 +94,13 @@ const ProfileInfo = () => {
         />
         <CustomButton
           title="Shop"
-          handlePress={() => {
-            router.push(`/shop/${1}`);
-          }}
+          handlePress={() => router.push(`/shop/${1}`)}
           containerStyles="w-[100px] bg-[#F1EAEA] h-[38px]"
           textStyles="text-black font-pSemibold text-[14px]"
         />
         <CustomButton
           title="Message"
-          handlePress={() => {
-            router.push(`/chat/${1}`);
-          }}
+          handlePress={() => router.push(`/chat/${1}`)}
           containerStyles="w-[100px] bg-[#F1EAEA] h-[38px]"
           textStyles="text-black font-pSemibold text-[14px]"
         />

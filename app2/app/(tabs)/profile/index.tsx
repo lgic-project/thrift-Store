@@ -1,9 +1,12 @@
 import { View, Text, FlatList } from "react-native";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ProfileInfo from "@/components/ProfileInfo";
 import VideoThumbnail from "@/components/VideoThumbnail";
 import EmptyState from "@/components/EmptyState";
+import { useNavigation, useRouter } from "expo-router";
+import { isAuthenticated } from "@/utils/auth";
+import { useFocusEffect } from "@react-navigation/native";
 
 interface VideoData {
   id: number;
@@ -107,7 +110,22 @@ const videos: VideoData[] = [
 ];
 
 const Profile = () => {
+  const router = useRouter();
+  const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      const checkAuth = async () => {
+        const loggedIn = await isAuthenticated();
+        if (!loggedIn) {
+          router.push("/(auth)/signIn");
+        }
+      };
+      checkAuth();
+    }, [])
+  );
+
 
   const filledVideos =
     videos.length % 3 === 0
@@ -133,12 +151,9 @@ const Profile = () => {
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item, index }) =>
           item.id !== -1 ? (
-            <VideoThumbnail video={item} key={index}/>
+            <VideoThumbnail video={item} key={index} />
           ) : (
-            <View
-              key={index}
-              style={{ flex: 1, margin: 6, height: 180 }}
-            />
+            <View key={index} style={{ flex: 1, margin: 6, height: 180 }} />
           )
         }
         ListHeaderComponent={<ProfileInfo />}
