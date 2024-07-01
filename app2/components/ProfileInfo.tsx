@@ -9,17 +9,22 @@ import React from "react";
 import { TabBarIcon } from "./navigation/TabBarIcon";
 import InfoBox from "./InfoBox";
 import CustomButton from "./CustomButton";
-import { router } from "expo-router";
+import { router, useRouter } from "expo-router";
 
 const ProfileInfo = () => {
   const colorScheme = useColorScheme();
+  const router = useRouter();
   return (
     <View className="w-full justify-center items-center mt-6 mb-12 px-4">
       <View className="w-full flex-row justify-between mb-10">
         <TouchableOpacity onPress={() => {}}>
           <TabBarIcon name="swap-horizontal-outline" color={"gray"} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity
+          onPress={() => {
+            router.push("/(auth)/signIn");
+          }}
+        >
           <TabBarIcon name="log-out-outline" size={24} color={"red"} />
         </TouchableOpacity>
       </View>
@@ -65,7 +70,9 @@ const ProfileInfo = () => {
         />
         <CustomButton
           title="Shop"
-          handlePress={() => {router.push(`/shop/${1}`);}}
+          handlePress={() => {
+            router.push(`/shop/${1}`);
+          }}
           containerStyles="w-[100px] bg-[#F1EAEA] h-[38px]"
           textStyles="text-black font-pSemibold text-[14px]"
         />

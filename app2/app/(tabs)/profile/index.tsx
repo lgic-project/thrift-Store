@@ -133,7 +133,7 @@ const Profile = () => {
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item, index }) =>
           item.id !== -1 ? (
-            <VideoThumbnail video={item} key={index} redirectTo="[selectedVideo]"/>
+            <VideoThumbnail video={item} key={index}/>
           ) : (
             <View
               key={index}

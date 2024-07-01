@@ -11,7 +11,9 @@ import { useEffect } from "react";
 import "react-native-reanimated";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+const queryClient = new QueryClient();
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
@@ -47,6 +49,7 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <Stack>
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="chat/[message]" />
           <Stack.Screen name="search/[query]" />
@@ -54,10 +57,7 @@ export default function RootLayout() {
             name="product/[productInfo]"
             options={{ headerTransparent: true, title: "" }}
           />
-          <Stack.Screen
-            name="shop/[shopInfo]"
-            options={{ title: "Shop" }}
-          />
+          <Stack.Screen name="shop/[shopInfo]" options={{ title: "Shop" }} />
           <Stack.Screen
             name="cart/[cart]"
             options={{ headerTransparent: true, title: "" }}
