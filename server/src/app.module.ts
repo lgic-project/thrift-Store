@@ -16,6 +16,7 @@ import { CartModule } from './cart/cart.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { NotificationModule } from './notification/notification.module';
 import { QrcodeModule } from './qrcode/qrcode.module';
+import { ChatModule } from './chat/chat.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -35,6 +36,7 @@ import { QrcodeModule } from './qrcode/qrcode.module';
     CartModule,
     NotificationModule,
     QrcodeModule,
+    ChatModule,
   ],
   providers: [
     {
