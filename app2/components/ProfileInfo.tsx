@@ -61,7 +61,7 @@ const ProfileInfo = ({ user }:any) => {
         titleStyles="text-lg font-pSemibold"
       />
       <Text className="mt-6 font-pRegular text-sm dark:text-white">
-        Best For Gorals Alawi's the none One
+        {profile.description}
       </Text>
       <View className="mt-5 flex-row justify-around w-full ml-6">
         <InfoBox

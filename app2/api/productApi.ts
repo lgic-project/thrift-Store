@@ -14,6 +14,7 @@ export const registerProduct = async (
     const data = new FormData();
     data.append("name", formData.name);
     data.append("description", formData.description);
+    data.append("tags",formData.tags)
     data.append("price", formData.price.toString()); // Ensure numeric fields are strings
     data.append("stock", formData.stock.toString()); // Ensure numeric fields are strings
 

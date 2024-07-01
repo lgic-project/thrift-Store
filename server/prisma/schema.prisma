@@ -44,6 +44,7 @@ model Profile {
   id               String   @id @default(uuid())
   name             String
   username         String   @unique
+  description      String?
   permanentAddress String
   temporaryAddress String
   dob              String
@@ -82,6 +83,7 @@ model KYC {
 model Product {
   id                String           @id @default(uuid())
   name              String
+  tags              String?
   description       String
   price             Int
   stock             Int

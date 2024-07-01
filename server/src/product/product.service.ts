@@ -73,6 +73,7 @@ export class ProductService {
       data: {
         name: dto.name,
         description: dto.description,
+        tags:dto.tags,
         price: Number(dto.price),
         stock: Number(dto.stock),
         ProductColor: dto.colors,
@@ -246,6 +247,7 @@ export class ProductService {
       data: {
         name: dto.name,
         description: dto.description,
+        tags:dto.tags,
         price: dto.price,
         stock: dto.stock,
         ProductColor: dto.colors,

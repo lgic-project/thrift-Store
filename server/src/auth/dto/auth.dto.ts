@@ -27,6 +27,10 @@ export class SignUpDto {
   @IsString()
   username: string;
 
+  @IsOptional()
+  @IsString()
+  description: string;
+
   @IsNotEmpty()
   @IsEmail()
   email: string;
@@ -92,6 +96,10 @@ export class UpdateProfileDto {
   @IsOptional()
   @IsString()
   username: string;
+
+  @IsOptional()
+  @IsString()
+  description: string;
 
   @IsOptional()
   @IsString()

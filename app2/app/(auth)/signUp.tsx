@@ -22,6 +22,7 @@ export default function SignUp({ navigation }: any) {
   const [formData, setFormData] = useState({
     name: "",
     username: "",
+    description: "",
     email: "",
     phone: "",
     password: "",
@@ -93,7 +94,10 @@ export default function SignUp({ navigation }: any) {
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          contentContainerStyle={styles.scrollContainer}
+          showsVerticalScrollIndicator={false}
+        >
           <Image
             source={require("@/assets/images/logo.webp")}
             style={styles.logo}
@@ -114,6 +118,14 @@ export default function SignUp({ navigation }: any) {
                 placeholder="Username"
                 value={formData.username}
                 onChangeText={(text) => handleInputChange("username", text)}
+              />
+            </View>
+            <View style={styles.wrapperInput}>
+              <TextInput
+                style={styles.input}
+                placeholder="Bio"
+                value={formData.description}
+                onChangeText={(text) => handleInputChange("description", text)}
               />
             </View>
             <View style={styles.wrapperInput}>

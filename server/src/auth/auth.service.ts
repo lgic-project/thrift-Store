@@ -111,6 +111,7 @@ export class AuthService {
             create: {
               name: dto.name,
               username: dto.username,
+              description: dto.description,
               dob: dto.dob,
               occupation: dto.occupation,
               voterId: dto.voterId,
@@ -250,6 +251,7 @@ export class AuthService {
           update: {
             name: dto.name,
             username: dto.username,
+            description: dto.description,
             avatar: url,
             referralCode: dto.referralCode,
           },

@@ -23,6 +23,7 @@ export default function Create() {
     stock: "",
     colors: "",
     sizes: "",
+    tags: "",
     // categoryId: "",
   });
   const [images, setImages] = useState<ImagePicker.ImagePickerAsset[]>([]);
@@ -112,6 +113,12 @@ export default function Create() {
           placeholder="Description"
           value={formData.description}
           onChangeText={(text) => handleInputChange("description", text)}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Tags"
+          value={formData.tags}
+          onChangeText={(text) => handleInputChange("tags", text)}
         />
         <TextInput
           style={styles.input}

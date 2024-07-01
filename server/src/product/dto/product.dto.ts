@@ -12,6 +12,10 @@ export class CreateProductDto {
   @IsString()
   name: string;
 
+  @IsOptional()
+  @IsString()
+  tags: string;
+
   @IsNotEmpty()
   @IsString()
   description: string;
@@ -39,6 +43,11 @@ export class UpdateProductDto{
   @IsOptional()
   @IsString()
   name: string;
+
+  @IsOptional()
+  @IsString()
+  tags: string;
+
 
   @IsOptional()
   @IsString()
