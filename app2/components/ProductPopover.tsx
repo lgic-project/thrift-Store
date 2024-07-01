@@ -18,6 +18,15 @@ interface VideoData {
   url: string;
   profilePic: string;
   description: string;
+  thumbnail: string;
+  views: number;
+  likeCount: number;
+  commentCount: number;
+  price: number;
+  comments: any[];
+  images: string[];
+  reviews: any[];
+  stock: number;
 }
 
 interface ProductPopoverProps {
@@ -25,7 +34,6 @@ interface ProductPopoverProps {
   onClose: () => void;
   video: VideoData;
 }
-
 const ProductPopover: React.FC<ProductPopoverProps> = ({
   visible,
   onClose,
@@ -69,21 +77,38 @@ const ProductPopover: React.FC<ProductPopoverProps> = ({
               <View className="flex-row pt-4 justify-between w-full ">
                 <View className="flex-col">
                   <Text className="text-[18px] font-pSemibold">
-                    Roller Rabbit
+                    {video.title}
                   </Text>
                   <Text className="text-[14px] text-gray-500 mt-[-6px] font-pRegular">
-                    Vado Odelle Dress
+                    {video.description}
                   </Text>
                   <View className="ml-[-8px] flex-col items-start">
-                    <StarRatingDisplay rating={4.5} />
+                    <StarRatingDisplay
+                      rating={
+                        video.reviews && video.reviews.length > 0
+                          ? video.reviews.reduce(
+                              (acc, review) => acc + review.rating,
+                              0
+                            ) / video.reviews.length
+                          : 0
+                      }
+                    />
                     <Text className="text-[14px] font-pSemibold ml-[8px]">
-                      (320 Reviews)
+                      {video.reviews
+                        ? `${video.reviews.length} Reviews`
+                        : "No Reviews"}
                     </Text>
                   </View>
                 </View>
-                <Text className="font-pSemibold text-[12px]">
-                  Available in stoke
-                </Text>
+                {video.stock > 0 ? (
+                  <Text className={`font-pSemibold text-[12px] text-green-500`}>
+                    Available in stock
+                  </Text>
+                ) : (
+                  <Text className={`font-pSemibold text-[12px] text-red-500`}>
+                    Out of stock
+                  </Text>
+                )}
               </View>
               <View className="pt-5 flex items-start">
                 <Text className="text-[18px] font-pSemibold">Description</Text>
@@ -95,7 +120,9 @@ const ProductPopover: React.FC<ProductPopoverProps> = ({
               </View>
             </View>
             <View className="flex-row pt-5 items-center justify-evenly">
-              <Text className="text-[16px] font-pSemibold">Rs 198.00</Text>
+              <Text className="text-[16px] font-pSemibold">
+                Rs {video.price}
+              </Text>
               <CustomButton
                 title="Contact"
                 handlePress={() => {}}

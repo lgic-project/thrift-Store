@@ -1,165 +1,100 @@
 import { View, Text, FlatList } from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ProfileInfo from "@/components/ProfileInfo";
 import VideoThumbnail from "@/components/VideoThumbnail";
 import EmptyState from "@/components/EmptyState";
-import { useNavigation, useRouter } from "expo-router";
-import { isAuthenticated } from "@/utils/auth";
+import { useRouter } from "expo-router";
 import { useFocusEffect } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getMe } from "@/api/userApi";
+import { getMyProducts } from "@/api/productApi";
 
 interface VideoData {
-  id: number;
-  title: string;
-  username: string;
-  url: string;
-  profilePic: string;
+  id: string;
+  name: string;
   description: string;
-  thumbnail: string;
+  price: number;
+  stock: number;
+  ProductImages: string[];
+  ProductVideo: {
+    thumbnail: string;
+    video: string;
+    views: number;
+  };
+  Like: any[];
+  Comment: any[];
+  ProductReview: any[];
 }
-
-const videos: VideoData[] = [
-  {
-    id: 1,
-    title: "Product Title 1",
-    username: "Joe Doe",
-    url: "https://videos.pexels.com/video-files/15465878/15465878-sd_540_960_30fps.mp4",
-    profilePic:
-      "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
-    description: "#avicii #wflove",
-    thumbnail:
-      "https://images.pexels.com/photos/9136621/pexels-photo-9136621.jpeg?auto=compress&cs=tinysrgb&w=600",
-  },
-  {
-    id: 2,
-    title: "Product Title 2",
-    username: "Joe Doe",
-    url: "https://videos.pexels.com/video-files/17687288/17687288-sd_540_960_30fps.mp4",
-    profilePic:
-      "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
-    description: "#avicii #wflove",
-    thumbnail:
-      "https://images.pexels.com/photos/15831205/pexels-photo-15831205/free-photo-of-american-flag-at-the-9-11-memorial-in-new-york-city-new-york.jpeg?auto=compress&cs=tinysrgb&w=600",
-  },
-  {
-    id: 3,
-    title: "Product Title 3",
-    username: "Joe Doe",
-    url: "https://videos.pexels.com/video-files/17169505/17169505-sd_540_960_30fps.mp4",
-    profilePic:
-      "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
-    description: "#avicii #wflove",
-    thumbnail:
-      "https://images.pexels.com/photos/18423763/pexels-photo-18423763/free-photo-of-handsome-gentleman-holding-crocodile-leather-iphone-15-case-by-gentcreate.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  },
-  {
-    id: 4,
-    title: "Product Title 4",
-    username: "Joe Doe",
-    url: "https://videos.pexels.com/video-files/17687289/17687289-sd_540_960_30fps.mp4",
-    profilePic:
-      "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
-    description: "#avicii #wflove",
-    thumbnail:
-      "https://images.pexels.com/photos/19153800/pexels-photo-19153800/free-photo-of-fashion-man-couple-love.jpeg?auto=compress&cs=tinysrgb&w=600",
-  },
-  {
-    id: 5,
-    title: "Product Title 5",
-    username: "Joe Doe",
-    url: "https://videos.pexels.com/video-files/14907580/14907580-sd_540_960_30fps.mp4",
-    profilePic:
-      "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
-    description: "#avicii #wflove",
-    thumbnail:
-      "https://images.pexels.com/photos/15831205/pexels-photo-15831205/free-photo-of-american-flag-at-the-9-11-memorial-in-new-york-city-new-york.jpeg?auto=compress&cs=tinysrgb&w=600",
-  },
-  {
-    id: 6,
-    title: "Product Title 6",
-    username: "Joe Doe",
-    url: "https://videos.pexels.com/video-files/15465878/15465878-sd_540_960_30fps.mp4",
-    profilePic:
-      "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
-    description: "#avicii #wflove",
-    thumbnail:
-      "https://images.pexels.com/photos/9136621/pexels-photo-9136621.jpeg?auto=compress&cs=tinysrgb&w=600",
-  },
-  {
-    id: 7,
-    title: "Product Title 7",
-    username: "Joe Doe",
-    url: "https://videos.pexels.com/video-files/17687288/17687288-sd_540_960_30fps.mp4",
-    profilePic:
-      "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
-    description: "#avicii #wflove",
-    thumbnail:
-      "https://images.pexels.com/photos/15831205/pexels-photo-15831205/free-photo-of-american-flag-at-the-9-11-memorial-in-new-york-city-new-york.jpeg?auto=compress&cs=tinysrgb&w=600",
-  },
-  {
-    id: 8,
-    title: "Product Title 8",
-    username: "Joe Doe",
-    url: "https://videos.pexels.com/video-files/17169505/17169505-sd_540_960_30fps.mp4",
-    profilePic:
-      "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
-    description: "#avicii #wflove",
-    thumbnail:
-      "https://images.pexels.com/photos/18423763/pexels-photo-18423763/free-photo-of-handsome-gentleman-holding-crocodile-leather-iphone-15-case-by-gentcreate.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  },
-];
 
 const Profile = () => {
   const router = useRouter();
-  const navigation = useNavigation();
-  const [isLoading, setIsLoading] = useState(false);
+  const [user, setUser] = useState(null);
+  const [myProducts, setMyProducts] = useState<VideoData[]>([]);
 
   useFocusEffect(
     useCallback(() => {
-      const checkAuth = async () => {
-        const loggedIn = await isAuthenticated();
-        if (!loggedIn) {
+      const fetchUserData = async () => {
+        try {
+          const response = await getMe();
+          setUser(response.data);
+
+          const productsResponse = await getMyProducts();
+          setMyProducts(
+            productsResponse.data.filter(
+              (product: any) => product.ProductVideo?.video
+            )
+          );
+        } catch (error) {
+          console.error("Error fetching data:", error);
+          await AsyncStorage.removeItem("AccessToken");
           router.push("/(auth)/signIn");
         }
       };
-      checkAuth();
-    }, [])
+      fetchUserData();
+    }, [router])
   );
 
-
-  const filledVideos =
-    videos.length % 3 === 0
-      ? videos
+  const filledProducts =
+    myProducts.length % 3 === 0
+      ? myProducts
       : [
-          ...videos,
-          ...Array(3 - (videos.length % 3)).fill({
+          ...myProducts,
+          ...Array(3 - (myProducts.length % 3)).fill({
             id: -1,
-            title: "",
-            username: "",
-            url: "",
-            profilePic: "",
+            name: "",
             description: "",
-            thumbnail: "",
+            price: 0,
+            stock: 0,
+            ProductImages: [],
+            ProductVideo: {
+              thumbnail: "",
+              video: "",
+              views: 0,
+            },
+            Like: [],
+            Comment: [],
+            ProductReview: [],
           }),
         ];
 
   return (
     <SafeAreaView className={`h-full`}>
       <FlatList
-        data={filledVideos}
+        data={filledProducts}
         numColumns={3}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item, index }) =>
           item.id !== -1 ? (
-            <VideoThumbnail video={item} key={index} />
+            <VideoThumbnail product={item} key={index} />
           ) : (
             <View key={index} style={{ flex: 1, margin: 6, height: 180 }} />
           )
         }
-        ListHeaderComponent={<ProfileInfo />}
+        ListHeaderComponent={<ProfileInfo user={user} />}
         ListEmptyComponent={() => (
           <EmptyState
-            title="No videos found"
+            title="No products found"
             subTitle="No product videos found."
           />
         )}

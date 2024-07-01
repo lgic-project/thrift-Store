@@ -5,6 +5,7 @@ import {
   Dimensions,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  Text,
 } from "react-native";
 import { useIsFocused, useRoute } from "@react-navigation/native";
 import PlayProfileVideo from "@/components/PlayProfileVideo";
@@ -13,6 +14,21 @@ import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 interface RouteParams {
   selectedVideo: string;
   productName: string;
+  productDescription: string;
+  productPrice: number;
+  productStock: number;
+  productImages: string[];
+  productVideoThumbnail: string;
+  productVideoViews: number;
+  profile: {
+    avatar: string;
+    name: string;
+    username: string;
+  };
+  likeCount: number;
+  commentCount: number;
+  comments: any[];
+  reviews: any[];
 }
 
 export default function SelectedVideo() {
@@ -37,7 +53,6 @@ export default function SelectedVideo() {
   useEffect(() => {
     setVideoList([params.selectedVideo]);
   }, [params.selectedVideo]);
-
   return (
     <View style={{ flex: 1 }}>
       <View style={{ height: windowHeight }}>
@@ -53,7 +68,23 @@ export default function SelectedVideo() {
           contentContainerStyle={{ paddingBottom: 134 }}
           renderItem={({ item, index }) => (
             <PlayProfileVideo
-              video={item}
+              video={{
+                id: index,
+                title: params.productName,
+                username: params.profile.username,
+                url: item,
+                profilePic: params.profile.avatar,
+                description: params.productDescription,
+                thumbnail: params.productVideoThumbnail,
+                views: params.productVideoViews,
+                likeCount: params.likeCount,
+                commentCount: params.commentCount,
+                comments:params.comments,
+                price:params.productPrice,
+                images:params.productImages,
+                reviews:params.reviews,
+                stock:params.productStock
+              }}
               index={index}
               activeIndex={currentVideoIndex}
               isFocused={isFocused}

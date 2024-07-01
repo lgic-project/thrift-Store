@@ -49,3 +49,22 @@ export const logout = async () => {
     console.log("Token removed");
   }
 };
+
+export const getMe = async () => {
+  try {
+    const token = await AsyncStorage.getItem("AccessToken");
+    if (!token) throw new Error("No auth token found");
+    const result = await ApiManager("/auth/me", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return result;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+

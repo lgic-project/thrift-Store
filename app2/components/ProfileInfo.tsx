@@ -1,11 +1,4 @@
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  useColorScheme,
-  Alert,
-} from "react-native";
+import { View, Text, Image, TouchableOpacity, useColorScheme, Alert } from "react-native";
 import React from "react";
 import { TabBarIcon } from "./navigation/TabBarIcon";
 import InfoBox from "./InfoBox";
@@ -13,8 +6,7 @@ import CustomButton from "./CustomButton";
 import { useRouter } from "expo-router";
 import { logout } from "@/api/userApi";
 
-const ProfileInfo = () => {
-  const colorScheme = useColorScheme();
+const ProfileInfo = ({ user }:any) => {
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -42,6 +34,9 @@ const ProfileInfo = () => {
     );
   };
 
+  if (!user) return null;
+
+  const profile = user.Profile;
   return (
     <View className="w-full justify-center items-center mt-6 mb-12 px-4">
       <View className="w-full flex-row justify-between mb-10">
@@ -54,14 +49,14 @@ const ProfileInfo = () => {
       </View>
       <Image
         source={{
-          uri: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
+          uri: profile.avatar || "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
         }}
-        className="w-[80px] h-[80px] rounded-full"
-        resizeMode="cover"
+        className="w-[80px] h-[80px] rounded-full bg-gray-300"
+        resizeMode="contain"
       />
       <InfoBox
-        title="John Doe"
-        subtitle="@XxJohnDoeXx"
+        title={profile.name || "John Doe"}
+        subtitle={profile.username || "@XxJohnDoeXx"}
         containerStyles="mt-5"
         titleStyles="text-lg font-pSemibold"
       />

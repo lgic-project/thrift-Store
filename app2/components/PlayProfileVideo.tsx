@@ -22,6 +22,14 @@ interface VideoData {
   profilePic: string;
   description: string;
   thumbnail: string;
+  views:number,
+  likeCount: number;
+  commentCount: number;
+  price: number;
+  comments: any[];
+  images: string[];
+  reviews: any[];
+  stock:number
 }
 
 interface PlayProfileVideoProps {
@@ -44,11 +52,11 @@ const PlayProfileVideo = ({
   const topTabBarHeight = 50; // Adjust this value according to your top tab bar height
   const screenHeight =
     Dimensions.get("window").height - BottomTabHeight - topTabBarHeight;
-
+  const [isPaused, setIsPaused] = useState(false);
   const [liked, setLiked] = useState(false);
 
   useEffect(() => {
-    if (activeIndex === index && isFocused) {
+    if (activeIndex === index && isFocused && !isPaused && video.url) {
       videoRef.current?.playAsync().catch((error) => {
         console.error("Error playing video:", error);
       });
@@ -57,8 +65,20 @@ const PlayProfileVideo = ({
         console.error("Error pausing video:", error);
       });
     }
-  }, [activeIndex, isFocused]);
+  }, [activeIndex, isFocused, isPaused]);
 
+  const togglePlayPause = () => {
+    if (isPaused) {
+      videoRef.current?.playAsync().catch((error) => {
+        console.error("Error playing video:", error);
+      });
+    } else {
+      videoRef.current?.pauseAsync().catch((error) => {
+        console.error("Error pausing video:", error);
+      });
+    }
+    setIsPaused(!isPaused);
+  };
   return (
     <View style={{ height: screenHeight }}>
       <ProductPopover
@@ -73,19 +93,19 @@ const PlayProfileVideo = ({
             onPress={() => setModalVisible(true)} // Show the modal when pressed
           >
             <Image
-              source={{ uri: video.profilePic }}
+              source={{ uri: video.thumbnail? video.thumbnail : video.images[0]}}
               className="w-[100px] h-full rounded-2xl"
               resizeMode="contain"
               style={{ backgroundColor: "rgba(255, 255, 255, 0.3)" }}
             />
             <View className="flex justify-between">
               <View>
-                <Text className="font-pBold text-[14px]">Roller Rabbit</Text>
+                <Text className="font-pBold text-[14px]">{video.title}</Text>
                 <Text className="font-pRegular text-[14px]">
-                  Vado Odelle Dress
+                  {video.description}
                 </Text>
               </View>
-              <Text className="font-pBold text-[14px]">Rs 198.00</Text>
+              <Text className="font-pBold text-[14px]">Rs {video.price}</Text>
             </View>
           </TouchableOpacity>
           <View className="flex-row items-center gap-5">
@@ -116,7 +136,7 @@ const PlayProfileVideo = ({
               <View className="flex-row justify-center items-center gap-2 mr-2">
                 <TabBarIcon name="eye-outline" color="white" size={20} />
                 <Text className="text-white font-pSemibold text-[12px]">
-                  1.2K
+                  {video.views}
                 </Text>
               </View>
               <CustomButton
@@ -140,11 +160,11 @@ const PlayProfileVideo = ({
                 size={38}
               />
             </TouchableOpacity>
-            <Text className="text-white mt-1">4445</Text>
+            <Text className="text-white mt-1">{video.likeCount}</Text>
           </View>
           <View className="flex justify-center items-center">
             <TabBarIcon name="chatbubble-ellipses" color={"white"} size={35} />
-            <Text className="text-white mt-1">64</Text>
+            <Text className="text-white mt-1">{video.commentCount}</Text>
           </View>
           <View className="flex justify-center items-center">
             <TabBarIcon name="paper-plane-sharp" color={"white"} size={35} />
@@ -156,25 +176,35 @@ const PlayProfileVideo = ({
             className="rounded-full p-2"
           >
             <Image
-              source={{ uri: video?.profilePic }}
+              source={{ uri: video.profilePic }}
               className="w-9 h-9 rounded-full bg-white "
               resizeMode="cover"
             />
           </LinearGradient>
         </View>
       </View>
-      <ExpoVideo
-        ref={videoRef}
-        style={[styles.video, { height: screenHeight }]}
-        source={{
-          uri: video.url,
-        }}
-        useNativeControls={false}
-        resizeMode={ResizeMode.COVER}
-        isLooping
-        shouldPlay={activeIndex === index && isFocused}
-        onPlaybackStatusUpdate={(status) => setStatus(status)}
-      />
+      <TouchableOpacity
+        style={{ height: screenHeight, justifyContent: "center" }}
+        onPress={togglePlayPause}
+      >
+        {isPaused && (
+          <View style={styles.pauseOverlay}>
+            <TabBarIcon name="play-circle" size={64} color="white" />
+          </View>
+        )}
+        <ExpoVideo
+          ref={videoRef}
+          style={[styles.video, { height: screenHeight }]}
+          source={{
+            uri: video.url,
+          }}
+          useNativeControls={false}
+          resizeMode={ResizeMode.COVER}
+          isLooping
+          shouldPlay={activeIndex === index && isFocused && !isPaused}
+          onPlaybackStatusUpdate={(status) => setStatus(status)}
+        />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -183,6 +213,13 @@ const styles = StyleSheet.create({
   video: {
     alignSelf: "center",
     width: Dimensions.get("window").width,
+  },
+  pauseOverlay: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: [{ translateX: -32 }, { translateY: -32 }],
+    zIndex: 10,
   },
 });
 
